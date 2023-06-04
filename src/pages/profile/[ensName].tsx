@@ -1,10 +1,42 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import { Box, Heading, Text, Image, Flex, Icon, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Image,
+  Flex,
+  Icon,
+  Link,
+  Skeleton,
+} from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
-
+import { ethers } from "ethers";
+import { Inter, Manrope } from "next/font/google";
+const manrope = Manrope({ subsets: ["latin"] });
 const ethersDynamic: Promise<any> = import("ethers");
+
+// This component represents a skeleton state of an ENS record.
+function ENSRecordSkeleton({
+  children,
+  isLoaded,
+}: {
+  children: any;
+  isLoaded: any;
+}) {
+  return (
+    <Skeleton
+      isLoaded={isLoaded}
+      startColor="white"
+      endColor="gray.300"
+      borderRadius="full"
+      mb="4"
+    >
+      {children}
+    </Skeleton>
+  );
+}
 
 const ProfilePage = () => {
   const [provider, setProvider] = useState<any>(null);
@@ -13,6 +45,7 @@ const ProfilePage = () => {
   const { ensName } = router.query;
 
   const [ensRecords, setEnsRecords] = useState<Record<string, string>>({});
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     ethersDynamic.then((ethers) => {
@@ -25,6 +58,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const getAllRecords = async (ensName: string) => {
+      setLoading(true);
       const client = new ApolloClient({
         uri: "https://api.thegraph.com/subgraphs/name/ensdomains/ens",
         cache: new InMemoryCache(),
@@ -44,7 +78,6 @@ const ProfilePage = () => {
       `;
 
       const result = await client.query({ query });
-      console.log(result.data);
 
       if (provider && result.data && result.data.domains.length > 0) {
         const resolver = await provider.getResolver(ensName);
@@ -53,7 +86,6 @@ const ProfilePage = () => {
             resolver.getText(key)
           )
         );
-        console.log(textRecords);
 
         // Store the results in the component's state.
         const newRecords: Record<string, string> = {};
@@ -63,6 +95,7 @@ const ProfilePage = () => {
           }
         );
         setEnsRecords(newRecords);
+        setLoading(false);
       }
     };
 
@@ -72,43 +105,69 @@ const ProfilePage = () => {
   }, [ensName, provider]);
 
   return (
-    <Box p={4} minHeight="100vh" w="full" backgroundColor={"gray.50"}>
-      <Box
-        p={4}
-        className="credit-card"
-        shadow="lg"
-        bg="white"
-        mx="auto"
-        rounded="xl"
-        w="full"
-      >
-        <main className="w-full p-4 mt-4">
-          <Flex direction="column" w="full" align="center" mt={4} p={4}>
+    <Box
+      minHeight="100vh"
+      w="full"
+      backgroundColor={"gray.50"}
+      className={` ${manrope.className}`}
+    >
+      <main className="w-full p-4 mt-4">
+        <Flex direction="column" w="full" align="center">
+          <ENSRecordSkeleton isLoaded={!isLoading}>
             <Image
               src={ensRecords.avatar || "/placeholder.jpg"}
               alt="Avatar"
               boxSize="200px"
               rounded="full"
             />
-            <Heading as="h1" size="2xl" textAlign="center">
+          </ENSRecordSkeleton>
+          <ENSRecordSkeleton isLoaded={!isLoading}>
+            <Heading mt={4} as="h1" size="lg" textAlign="center">
               {ensName || ""}
             </Heading>
+          </ENSRecordSkeleton>
+          <ENSRecordSkeleton isLoaded={!isLoading}>
             {ensRecords.description && (
-              <Text mt={4} textAlign="center">
+              <Text
+                textAlign="center"
+                fontWeight={"medium"}
+                textColor={"gray.500"}
+              >
                 {ensRecords.description}
               </Text>
             )}
+          </ENSRecordSkeleton>
+          <ENSRecordSkeleton isLoaded={!isLoading}>
             {ensRecords["com.github"] && (
-              <Flex align="center" mt={4}>
-                <Icon as={FaGithub} boxSize={6} mr={2} />
-                <Link href={ensRecords["com.github"]} isExternal>
-                  {ensRecords["com.github"]}
+              <Flex
+                border={"1px"}
+                borderColor={"gray.200"}
+                align="center"
+                mt={2}
+                p={4}
+                backgroundColor={"white"}
+                borderRadius={"md"}
+              >
+                <Link
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  gap={2}
+                  href={ensRecords["com.github"]}
+                  h={"full"}
+                  w={"full"}
+                  isExternal
+                >
+                  <Icon as={FaGithub} boxSize={6} mr={2} />
+                  <Text fontSize={"lg"} fontWeight={"semibold"}>
+                    {ensRecords["com.github"]}
+                  </Text>
                 </Link>
               </Flex>
             )}
-          </Flex>
-        </main>
-      </Box>
+          </ENSRecordSkeleton>
+        </Flex>
+      </main>
     </Box>
   );
 };
