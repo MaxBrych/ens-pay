@@ -59,7 +59,63 @@ const SearchAddress = () => {
     }
   };
 
-  return <Box w={"full"}>// ... the rest of your code</Box>;
+  return (
+    <Box w={"full"}>
+      <Box p={1} className="credit-card" mx="auto" w="full" maxW={"lg"}>
+        <FormControl
+          id="addr"
+          mt={1}
+          justifyContent={"center"}
+          alignItems={"center"}
+          display={"flex"}
+          flexDirection={"column"}
+        >
+          <FormLabel
+            textAlign={"center"}
+            mb={4}
+            textColor={"gray.700"}
+            fontSize={"4xl"}
+            lineHeight={"1.1"}
+            fontWeight={"black"}
+          >
+            Search for your <br />
+            ETH address
+          </FormLabel>
+          <FormLabel
+            mb={8}
+            textAlign={"center"}
+            fontSize={"lg"}
+            fontWeight={"semibold"}
+            textColor={"gray.500"}
+          >
+            We&apos;ll find your ENS name
+          </FormLabel>
+          <Input
+            borderRadius={"2xl"}
+            h={"20"}
+            fontWeight={"bold"}
+            backgroundColor={"white"}
+            fontSize={"xl"}
+            ref={addrRef}
+            placeholder="ETH Address"
+          ></Input>
+          <Button
+            size={"lg"}
+            w={"full"}
+            borderRadius={"full"}
+            mt={6}
+            fontSize={"lg"}
+            colorScheme="blue"
+            onClick={handleSubmit}
+            isLoading={isLoading}
+            loadingText="Resolving..."
+          >
+            Resolve Name
+          </Button>
+        </FormControl>
+      </Box>
+    </Box>
+  );
 };
 
 export default SearchAddress;
