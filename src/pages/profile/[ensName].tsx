@@ -80,35 +80,35 @@ const ProfilePage = () => {
         }
       }
       `;
-      const address = await provider.resolveName(ensName);
-      setAddress(address);
-      const result = await client.query({ query });
 
-      if (provider && result.data && result.data.domains.length > 0) {
-        const resolver = await provider.getResolver(ensName);
-        const textRecords = await Promise.all(
-          result.data.domains[0].resolver.texts.map((key: string) =>
-            resolver.getText(key)
-          )
-        );
+      if (ensName && provider) {
+        const address = await provider.resolveName(ensName);
+        setAddress(address);
 
-        // Store the results in the component's state.
-        const newRecords: Record<string, string> = {};
-        result.data.domains[0].resolver.texts.forEach(
-          (text: string, index: number) => {
-            newRecords[text] = textRecords[index];
-          }
-        );
-        setEnsRecords(newRecords);
-        setLoading(false);
+        const result = await client.query({ query });
+
+        if (result.data && result.data.domains.length > 0) {
+          const resolver = await provider.getResolver(ensName);
+          const textRecords = await Promise.all(
+            result.data.domains[0].resolver.texts.map((key: string) =>
+              resolver.getText(key)
+            )
+          );
+
+          // Store the results in the component's state.
+          const newRecords: Record<string, string> = {};
+          result.data.domains[0].resolver.texts.forEach(
+            (text: string, index: number) => {
+              newRecords[text] = textRecords[index];
+            }
+          );
+          setEnsRecords(newRecords);
+          setLoading(false);
+        }
       }
     };
-    if (ensName && provider) {
-      // ensure both ensName and provider are available
-      getAllRecords(ensName as string);
-    }
 
-    if (ensName) {
+    if (ensName && provider) {
       getAllRecords(ensName as string);
     }
   }, [ensName, provider]);
