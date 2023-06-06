@@ -89,20 +89,24 @@ const ProfilePage = () => {
 
         if (result.data && result.data.domains.length > 0) {
           const resolver = await provider.getResolver(ensName);
-          const textRecords = await Promise.all(
-            result.data.domains[0].resolver.texts.map((key: string) =>
-              resolver.getText(key)
-            )
-          );
 
-          // Store the results in the component's state.
-          const newRecords: Record<string, string> = {};
-          result.data.domains[0].resolver.texts.forEach(
-            (text: string, index: number) => {
-              newRecords[text] = textRecords[index];
-            }
-          );
-          setEnsRecords(newRecords);
+          // Check if texts are defined and not empty before mapping
+          if (result.data.domains[0].resolver.texts) {
+            const textRecords = await Promise.all(
+              result.data.domains[0].resolver.texts.map((key: string) =>
+                resolver.getText(key)
+              )
+            );
+
+            // Store the results in the component's state.
+            const newRecords: Record<string, string> = {};
+            result.data.domains[0].resolver.texts.forEach(
+              (text: string, index: number) => {
+                newRecords[text] = textRecords[index];
+              }
+            );
+            setEnsRecords(newRecords);
+          }
           setLoading(false);
         }
       }
