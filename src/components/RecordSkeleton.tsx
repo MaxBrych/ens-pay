@@ -1,4 +1,5 @@
 import { Box, Skeleton } from "@chakra-ui/react";
+import { ENS } from "@ensdomains/ensjs";
 import { useRouter } from "next/router";
 
 function ENSRecordSkeleton(children: any, isLoaded: any) {
@@ -21,7 +22,9 @@ export default function ProfilePage() {
       <ENSRecordSkeleton isLoaded={!isLoading}>
         <img src={data?.avatar} />
       </ENSRecordSkeleton>
-      {/* Add more fields as needed... */}
+      <ENSRecordSkeleton isLoaded={!isLoading}>
+        <h3>{data?.address}</h3>
+      </ENSRecordSkeleton>
     </Box>
   );
 }

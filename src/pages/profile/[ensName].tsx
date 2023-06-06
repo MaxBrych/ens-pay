@@ -14,6 +14,7 @@ import {
 import { FaGithub } from "react-icons/fa";
 import { ethers } from "ethers";
 import { Inter, Manrope } from "next/font/google";
+import Navbar from "@/components/NavBar";
 const manrope = Manrope({ subsets: ["latin"] });
 const ethersDynamic: Promise<any> = import("ethers");
 
@@ -105,70 +106,76 @@ const ProfilePage = () => {
   }, [ensName, provider]);
 
   return (
-    <Box
-      minHeight="100vh"
-      w="full"
-      backgroundColor={"gray.50"}
-      className={` ${manrope.className}`}
-    >
-      <main className="w-full p-4 mt-4">
-        <Flex direction="column" w="full" align="center">
-          <ENSRecordSkeleton isLoaded={!isLoading}>
-            <Image
-              src={ensRecords.avatar || "/placeholder.jpg"}
-              alt="Avatar"
-              boxSize="200px"
-              rounded="full"
-            />
-          </ENSRecordSkeleton>
-          <ENSRecordSkeleton isLoaded={!isLoading}>
-            <Heading mt={4} as="h1" size="lg" textAlign="center">
-              {ensName || ""}
-            </Heading>
-          </ENSRecordSkeleton>
-          <ENSRecordSkeleton isLoaded={!isLoading}>
-            {ensRecords.description && (
-              <Text
-                textAlign="center"
-                fontWeight={"medium"}
-                textColor={"gray.500"}
-              >
-                {ensRecords.description}
-              </Text>
-            )}
-          </ENSRecordSkeleton>
-          <ENSRecordSkeleton isLoaded={!isLoading}>
-            {ensRecords["com.github"] && (
-              <Flex
-                border={"1px"}
-                borderColor={"gray.200"}
-                align="center"
-                mt={2}
-                p={4}
-                backgroundColor={"white"}
-                borderRadius={"md"}
-              >
-                <Link
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  gap={2}
-                  href={ensRecords["com.github"]}
-                  h={"full"}
-                  w={"full"}
-                  isExternal
+    <>
+      <Navbar />
+      <Box
+        minHeight="100vh"
+        w="full"
+        backgroundColor={"gray.50"}
+        className={` ${manrope.className}`}
+      >
+        <main className="w-full p-4 mt-4">
+          <Flex direction="column" w="full" align="center">
+            <ENSRecordSkeleton isLoaded={!isLoading}>
+              <Image
+                src={
+                  ensRecords.avatar ||
+                  "https://cdn.discordapp.com/attachments/1070670506052821083/1115515708802076763/MaxCJack60_small_town_people_living_with_robots_and_delivery_dr_40bd2932-6127-4391-a6c0-d9348f6d0db6.png"
+                }
+                alt="Avatar"
+                boxSize="200px"
+                rounded="full"
+              />
+            </ENSRecordSkeleton>
+            <ENSRecordSkeleton isLoaded={!isLoading}>
+              <Heading mt={4} as="h1" size="lg" textAlign="center">
+                {ensName || ""}
+              </Heading>
+            </ENSRecordSkeleton>
+            <ENSRecordSkeleton isLoaded={!isLoading}>
+              {ensRecords.description && (
+                <Text
+                  textAlign="center"
+                  fontWeight={"medium"}
+                  textColor={"gray.500"}
                 >
-                  <Icon as={FaGithub} boxSize={6} mr={2} />
-                  <Text fontSize={"lg"} fontWeight={"semibold"}>
-                    {ensRecords["com.github"]}
-                  </Text>
-                </Link>
-              </Flex>
-            )}
-          </ENSRecordSkeleton>
-        </Flex>
-      </main>
-    </Box>
+                  {ensRecords.description}
+                </Text>
+              )}
+            </ENSRecordSkeleton>
+            <ENSRecordSkeleton isLoaded={!isLoading}>
+              {ensRecords["com.github"] && (
+                <Flex
+                  border={"1px"}
+                  borderColor={"gray.200"}
+                  align="center"
+                  mt={2}
+                  p={4}
+                  backgroundColor={"white"}
+                  borderRadius={"md"}
+                >
+                  <Link
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    gap={2}
+                    href={ensRecords["com.github"]}
+                    h={"full"}
+                    w={"full"}
+                    isExternal
+                  >
+                    <Icon as={FaGithub} boxSize={6} mr={2} />
+                    <Text fontSize={"lg"} fontWeight={"semibold"}>
+                      {ensRecords["com.github"]}
+                    </Text>
+                  </Link>
+                </Flex>
+              )}
+            </ENSRecordSkeleton>
+          </Flex>
+        </main>
+      </Box>
+    </>
   );
 };
 
