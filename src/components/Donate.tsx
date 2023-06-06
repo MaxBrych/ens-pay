@@ -1,8 +1,21 @@
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import {
+  Button,
+  ButtonGroup,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  useDisclosure,
+  Icon,
+  VStack,
+} from "@chakra-ui/react";
+import { FaCoffee } from "react-icons/fa"; // for coffee icon
 import { ethers } from "ethers";
 import { WalletInstance, useWallet } from "@thirdweb-dev/react";
 
-const USDC_CONTRACT_ADDRESS = "0x..."; // Your USDC contract address here
+const USDC_CONTRACT_ADDRESS = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"; // Your USDC contract address here
 const DECIMALS = 6; // USDC has 6 decimals
 const DONATION_AMOUNTS = [5, 10, 25];
 
@@ -26,12 +39,13 @@ interface DonateButtonProps {
 }
 
 export default function DonateButton({ receiverAddress }: DonateButtonProps) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const wallet: WalletInstance | undefined = useWallet();
   const connect = wallet?.connect;
 
   async function handleDonate(amount: number) {
     // Ensure wallet is connected
-    const account = connect && (await connect());
+    const account = wallet?.connect && (await wallet.connect());
 
     if (!account) {
       return;
@@ -46,13 +60,37 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
   }
 
   return (
-    <ButtonGroup>
-      {DONATION_AMOUNTS.map((amount) => (
-        <Button
-          key={amount}
-          onClick={() => handleDonate(amount)}
-        >{`Donate $${amount}`}</Button>
-      ))}
-    </ButtonGroup>
+    <>
+      <Button
+        leftIcon={<Icon as={FaCoffee} />}
+        colorScheme="blue"
+        onClick={onOpen}
+      >
+        Support Me
+      </Button>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Support Me</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <ButtonGroup spacing={4}>
+              {DONATION_AMOUNTS.map((amount) => (
+                <Button
+                  key={amount}
+                  onClick={() => {
+                    handleDonate(amount);
+                    onClose();
+                  }}
+                >
+                  {`Donate $${amount}`}
+                </Button>
+              ))}
+            </ButtonGroup>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }
