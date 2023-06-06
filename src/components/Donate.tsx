@@ -26,13 +26,19 @@ const contractABI = [
 ];
 
 // Use type assertion to let TypeScript know that window.ethereum is available
-const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-const signer = provider.getSigner();
-const usdcContract = new ethers.Contract(
-  USDC_CONTRACT_ADDRESS,
-  contractABI,
-  signer
-);
+let provider: ethers.providers.Web3Provider;
+let signer;
+let usdcContract: ethers.Contract;
+
+if (typeof window !== "undefined") {
+  provider = new ethers.providers.Web3Provider(window.ethereum as any);
+  signer = provider.getSigner();
+  usdcContract = new ethers.Contract(
+    USDC_CONTRACT_ADDRESS,
+    contractABI,
+    signer
+  );
+}
 
 interface DonateButtonProps {
   receiverAddress: any;
@@ -41,7 +47,6 @@ interface DonateButtonProps {
 export default function DonateButton({ receiverAddress }: DonateButtonProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const wallet: WalletInstance | undefined = useWallet();
-  const connect = wallet?.connect;
 
   async function handleDonate(amount: number) {
     // Ensure wallet is connected
