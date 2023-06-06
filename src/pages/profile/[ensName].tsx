@@ -15,6 +15,7 @@ import { FaGithub } from "react-icons/fa";
 import { ethers } from "ethers";
 import { Inter, Manrope } from "next/font/google";
 import Navbar from "@/components/NavBar";
+import DonateButton from "@/components/Donate";
 const manrope = Manrope({ subsets: ["latin"] });
 const ethersDynamic: Promise<any> = import("ethers");
 
@@ -41,6 +42,8 @@ function ENSRecordSkeleton({
 
 const ProfilePage = () => {
   const [provider, setProvider] = useState<any>(null);
+
+  const [address, setAddress] = useState(null);
 
   const router = useRouter();
   const { ensName } = router.query;
@@ -77,7 +80,8 @@ const ProfilePage = () => {
         }
       }
       `;
-
+      const address = await provider.resolveName(ensName);
+      setAddress(address);
       const result = await client.query({ query });
 
       if (provider && result.data && result.data.domains.length > 0) {
@@ -99,6 +103,10 @@ const ProfilePage = () => {
         setLoading(false);
       }
     };
+    if (ensName && provider) {
+      // ensure both ensName and provider are available
+      getAllRecords(ensName as string);
+    }
 
     if (ensName) {
       getAllRecords(ensName as string);
@@ -171,6 +179,8 @@ const ProfilePage = () => {
                   </Link>
                 </Flex>
               )}
+
+              <DonateButton receiverAddress={address} />
             </ENSRecordSkeleton>
           </Flex>
         </main>
