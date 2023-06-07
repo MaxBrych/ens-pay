@@ -1,8 +1,7 @@
-// Donate.tsx
-
+import React, { useEffect, useState } from "react";
 import {
   Button,
-  ButtonGroup,
+  Flex,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -11,11 +10,16 @@ import {
   ModalBody,
   useDisclosure,
   Icon,
-  VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { FaCoffee } from "react-icons/fa"; // for coffee icon
+import {
+  WalletInstance,
+  useAddress,
+  useNetwork,
+  useWallet,
+} from "@thirdweb-dev/react";
 import { ethers } from "ethers";
-import { WalletInstance, useWallet } from "@thirdweb-dev/react";
 
 const USDC_CONTRACT_ADDRESS = "0x2791bca1f2de4661ed88a30c99a7a9449aa84174"; // Polygon USDC contract address
 const DECIMALS = 6; // USDC has 6 decimals
@@ -27,39 +31,71 @@ const contractABI = [
   "function transfer(address recipient, uint256 amount) public returns (bool)",
 ];
 
-// Create provider and signer for Polygon network
-const provider = new ethers.providers.JsonRpcProvider(
-  process.env.NEXT_PUBLIC_PROVIDER_URL
-);
-const signer = provider.getSigner();
-const usdcContract = new ethers.Contract(
-  USDC_CONTRACT_ADDRESS,
-  contractABI,
-  signer
-);
-
 interface DonateButtonProps {
   receiverAddress: any;
 }
+
+import { useChainId } from "@thirdweb-dev/react";
 
 export default function DonateButton({ receiverAddress }: DonateButtonProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const wallet: WalletInstance | undefined = useWallet();
   const connect = wallet?.connect;
+  const [provider, setProvider] =
+    useState<ethers.providers.JsonRpcProvider | null>(null);
+  const [signer, setSigner] = useState<ethers.Signer | null>(null);
+  const [usdcContract, setUsdcContract] = useState<ethers.Contract | null>(
+    null
+  );
+  const chainId = useChainId(); // Replace useNetwork() with useChainId()
+  const account = useAddress();
+
+  useEffect(() => {
+    const loadProviderAndSigner = async () => {
+      const ethersDynamic: any = await import("ethers");
+      const provider = new ethersDynamic.providers.JsonRpcProvider(
+        process.env.NEXT_PUBLIC_POLYGON_HTTPS
+      );
+      const signer = provider.getSigner();
+      const usdcContract = new ethersDynamic.Contract(
+        USDC_CONTRACT_ADDRESS,
+        contractABI,
+        signer
+      );
+      setProvider(provider);
+      setSigner(signer);
+      setUsdcContract(usdcContract);
+    };
+    loadProviderAndSigner();
+  }, []);
+
+  const toast = useToast();
 
   async function handleDonate(amount: number) {
-    // Ensure wallet is connected
-    const account = connect && (await connect());
+    if (!provider || !signer || !usdcContract || !wallet || !account) {
+      return;
+    }
+
+    if (chainId !== 137) {
+      // 137 is the chainId for Polygon mainnet
+      toast({
+        title: "Network error.",
+        description: "Please connect to the Polygon mainnet.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
 
     if (!account) {
       return;
     }
 
-    // Prepare transaction
-    const value = ethers.utils.parseUnits(amount.toString(), DECIMALS);
+    const ethersDynamic: any = await import("ethers");
+    const value = ethersDynamic.utils.parseUnits(amount.toString(), DECIMALS);
     const tx = await usdcContract.transfer(receiverAddress, value);
 
-    // Wait for transaction to be mined
     await provider.waitForTransaction(tx.hash);
   }
 
@@ -79,7 +115,7 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
           <ModalHeader>Support Me</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack spacing={4}>
+            <Flex direction="row" gap={4}>
               {DONATION_AMOUNTS.map((amount) => (
                 <Button
                   key={amount}
@@ -91,7 +127,7 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
                   {`Donate $${amount}`}
                 </Button>
               ))}
-            </VStack>
+            </Flex>
           </ModalBody>
         </ModalContent>
       </Modal>

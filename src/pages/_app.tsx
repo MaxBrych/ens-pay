@@ -7,7 +7,7 @@ import {
 } from "@thirdweb-dev/react";
 import type { AppProps } from "next/app";
 
-const activeChain = "mumbai";
+const activeChain = "polygon";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
