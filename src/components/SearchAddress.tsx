@@ -110,7 +110,7 @@ const SearchAddress = () => {
             isLoading={isLoading}
             loadingText="Resolving..."
           >
-            Resolve Name
+            Search Name
           </Button>
         </FormControl>
       </Box>
