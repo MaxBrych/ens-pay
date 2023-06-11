@@ -10,6 +10,7 @@ import {
   Icon,
   Link,
   Skeleton,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
 import { ethers } from "ethers";
@@ -116,6 +117,8 @@ const ProfilePage = () => {
       getAllRecords(ensName as string);
     }
   }, [ensName, provider]);
+  const bg = useColorModeValue("gray.50", "#0a0b0d");
+  const color = useColorModeValue("gray.700", "white");
 
   return (
     <>
@@ -123,7 +126,8 @@ const ProfilePage = () => {
       <Box
         minHeight="100vh"
         w="full"
-        backgroundColor={"gray.50"}
+        color={color}
+        backgroundColor={bg}
         className={` ${manrope.className}`}
       >
         <main className="w-full p-4 mt-4">
@@ -132,7 +136,7 @@ const ProfilePage = () => {
               <Image
                 src={
                   ensRecords.avatar ||
-                  "https://cdn.discordapp.com/attachments/1070670506052821083/1115515708802076763/MaxCJack60_small_town_people_living_with_robots_and_delivery_dr_40bd2932-6127-4391-a6c0-d9348f6d0db6.png"
+                  "https://cdn.discordapp.com/attachments/1070670506052821083/1116097197826658414/MaxCJack60_Front-facing_human_figure_styled_akin_to_a_Pokemon_p_9fe497d9-0642-49ce-829e-d00ad4a1876f.png"
                 }
                 alt="Avatar"
                 boxSize="200px"
@@ -146,11 +150,7 @@ const ProfilePage = () => {
             </ENSRecordSkeleton>
             <ENSRecordSkeleton isLoaded={!isLoading}>
               {ensRecords.description && (
-                <Text
-                  textAlign="center"
-                  fontWeight={"medium"}
-                  textColor={"gray.500"}
-                >
+                <Text textAlign="center" fontWeight={"medium"} color={color}>
                   {ensRecords.description}
                 </Text>
               )}
@@ -171,13 +171,18 @@ const ProfilePage = () => {
                     justifyContent={"center"}
                     alignItems={"center"}
                     gap={2}
+                    color={color}
                     href={ensRecords["com.github"]}
                     h={"full"}
                     w={"full"}
                     isExternal
                   >
-                    <Icon as={FaGithub} boxSize={6} mr={2} />
-                    <Text fontSize={"lg"} fontWeight={"semibold"}>
+                    <Icon as={FaGithub} boxSize={6} mr={2} color={color} />
+                    <Text
+                      fontSize={"lg"}
+                      fontWeight={"semibold"}
+                      textColor={color}
+                    >
                       {ensRecords["com.github"]}
                     </Text>
                   </Link>
