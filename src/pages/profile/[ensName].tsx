@@ -11,12 +11,15 @@ import {
   Link,
   Skeleton,
   useColorModeValue,
+  HStack,
 } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
 import { ethers } from "ethers";
 import { Inter, Manrope } from "next/font/google";
 import Navbar from "@/components/NavBar";
 import DonateButton from "@/components/Donate";
+import ChatButton from "@/components/ChatButton";
+import AddressCopy from "@/components/AddressCopy";
 const manrope = Manrope({ subsets: ["latin"] });
 const ethersDynamic: Promise<any> = import("ethers");
 
@@ -149,6 +152,9 @@ const ProfilePage = () => {
               </Heading>
             </ENSRecordSkeleton>
             <ENSRecordSkeleton isLoaded={!isLoading}>
+              {address && <AddressCopy address={address} />}
+            </ENSRecordSkeleton>
+            <ENSRecordSkeleton isLoaded={!isLoading}>
               {ensRecords.description && (
                 <Text textAlign="center" fontWeight={"medium"} color={color}>
                   {ensRecords.description}
@@ -189,7 +195,11 @@ const ProfilePage = () => {
                 </Flex>
               )}
 
-              <DonateButton receiverAddress={address} />
+              <HStack mt={2} spacing={2}>
+                <ChatButton receiverAddress={address} />
+
+                <DonateButton receiverAddress={address} />
+              </HStack>
             </ENSRecordSkeleton>
           </Flex>
         </main>

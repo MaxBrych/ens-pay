@@ -11,6 +11,9 @@ import {
   useDisclosure,
   Icon,
   useToast,
+  VStack,
+  Text,
+  IconButton,
 } from "@chakra-ui/react";
 import { FaCoffee } from "react-icons/fa"; // for coffee icon
 import {
@@ -101,13 +104,14 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
 
   return (
     <>
-      <Button
-        leftIcon={<Icon as={FaCoffee} />}
-        colorScheme="blue"
-        onClick={onOpen}
-      >
-        Support Me
-      </Button>
+      <VStack>
+        <IconButton
+          aria-label="Send Message"
+          icon={<FaCoffee />}
+          onClick={onOpen}
+        />
+        <Text fontSize="sm">Support Me</Text>
+      </VStack>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
