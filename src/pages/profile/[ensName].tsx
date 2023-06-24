@@ -147,6 +147,13 @@ const ProfilePage = () => {
               />
             </ENSRecordSkeleton>
             <ENSRecordSkeleton isLoaded={!isLoading}>
+              <HStack mt={2} spacing={2}>
+                <ChatButton receiverAddress={address} />
+
+                <DonateButton receiverAddress={address} />
+              </HStack>
+            </ENSRecordSkeleton>
+            <ENSRecordSkeleton isLoaded={!isLoading}>
               <Heading mt={4} as="h1" size="lg" textAlign="center">
                 {ensName || ""}
               </Heading>
@@ -194,12 +201,6 @@ const ProfilePage = () => {
                   </Link>
                 </Flex>
               )}
-
-              <HStack mt={2} spacing={2}>
-                <ChatButton receiverAddress={address} />
-
-                <DonateButton receiverAddress={address} />
-              </HStack>
             </ENSRecordSkeleton>
           </Flex>
         </main>
