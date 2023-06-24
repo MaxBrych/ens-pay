@@ -19,7 +19,7 @@ import { FaCoffee } from "react-icons/fa"; // for coffee icon
 import {
   WalletInstance,
   useAddress,
-  useNetwork,
+  useChainId,
   useWallet,
 } from "@thirdweb-dev/react";
 import { ethers } from "ethers";
@@ -38,44 +38,40 @@ interface DonateButtonProps {
   receiverAddress: any;
 }
 
-import { useChainId } from "@thirdweb-dev/react";
-
 export default function DonateButton({ receiverAddress }: DonateButtonProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const wallet: WalletInstance | undefined = useWallet();
-  const connect = wallet?.connect;
-  const [provider, setProvider] =
-    useState<ethers.providers.JsonRpcProvider | null>(null);
-  const [signer, setSigner] = useState<ethers.Signer | null>(null);
   const [usdcContract, setUsdcContract] = useState<ethers.Contract | null>(
     null
   );
-  const chainId = useChainId(); // Replace useNetwork() with useChainId()
+  const chainId = useChainId();
   const account = useAddress();
 
   useEffect(() => {
     const loadProviderAndSigner = async () => {
+      if (!wallet) {
+        console.log("No wallet available");
+        return;
+      }
+
+      const signer = await wallet.getSigner();
+      console.log("Got signer:", signer);
+
       const ethersDynamic: any = await import("ethers");
-      const provider = new ethersDynamic.providers.JsonRpcProvider(
-        process.env.NEXT_PUBLIC_POLYGON_HTTPS
-      );
-      const signer = provider.getSigner();
       const usdcContract = new ethersDynamic.Contract(
         USDC_CONTRACT_ADDRESS,
         contractABI,
         signer
       );
-      setProvider(provider);
-      setSigner(signer);
       setUsdcContract(usdcContract);
     };
     loadProviderAndSigner();
-  }, []);
+  }, [wallet]);
 
   const toast = useToast();
 
   async function handleDonate(amount: number) {
-    if (!provider || !signer || !usdcContract || !wallet || !account) {
+    if (!wallet || !account || !usdcContract) {
       return;
     }
 
@@ -91,14 +87,11 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
       return;
     }
 
-    if (!account) {
-      return;
-    }
-
     const ethersDynamic: any = await import("ethers");
     const value = ethersDynamic.utils.parseUnits(amount.toString(), DECIMALS);
     const tx = await usdcContract.transfer(receiverAddress, value);
 
+    const provider = new ethersDynamic.providers.Web3Provider(window.ethereum);
     await provider.waitForTransaction(tx.hash);
   }
 
