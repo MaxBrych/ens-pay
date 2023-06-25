@@ -7,14 +7,15 @@ import {
   Input,
   Button,
   useToast,
+  Text,
 } from "@chakra-ui/react";
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const ethersDynamic: Promise<any> = import("ethers");
 
 const SearchAddress = () => {
   const [provider, setProvider] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const addrRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const toast = useToast();
@@ -28,29 +29,50 @@ const SearchAddress = () => {
     });
   }, []);
 
-  const getName = async (addr: string) => {
+  const getName = async (input: string) => {
     setIsLoading(true);
+    setIsError(false);
+
     if (provider) {
-      const resolvedName = await provider.lookupAddress(addr);
-      setIsLoading(false);
-      return resolvedName ?? addr;
+      if (input.includes(".eth")) {
+        const resolvedAddress = await provider.resolveName(input);
+        setIsLoading(false);
+
+        if (resolvedAddress) {
+          return resolvedAddress;
+        } else {
+          setIsError(true);
+          return input;
+        }
+      } else {
+        const resolvedName = await provider.lookupAddress(input);
+        setIsLoading(false);
+
+        if (resolvedName) {
+          return resolvedName;
+        } else {
+          setIsError(true);
+          return input;
+        }
+      }
     }
 
     setIsLoading(false);
-    return addr;
+    setIsError(true);
+    return input;
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (addrRef.current) {
-      if (addrRef.current.value) {
-        getName(addrRef.current.value).then((ensName) => {
-          router.push(`/profile/${ensName}`);
-        });
+      const userInput = addrRef.current.value;
+
+      if (userInput) {
+        router.push(`/profile/${userInput}`);
       } else {
         toast({
-          title: "Address is missing.",
-          description: "Please input an address.",
+          title: "Input is missing.",
+          description: "Please input an ENS name or Ethereum address.",
           status: "error",
           duration: 3000,
           isClosable: true,
@@ -64,7 +86,7 @@ const SearchAddress = () => {
       <Box p={1} className="credit-card" mx="auto" w="full" maxW={"lg"}>
         <FormControl
           as="form"
-          onSubmit={handleSubmit} // Added onSubmit prop
+          onSubmit={handleSubmit}
           id="addr"
           mt={1}
           justifyContent={"center"}
@@ -104,8 +126,14 @@ const SearchAddress = () => {
             backgroundColor={"white"}
             fontSize={{ base: "lg", md: "xl" }}
             ref={addrRef}
-            placeholder="ETH Address"
+            placeholder="ETH Address or ENS Name"
+            isInvalid={isError}
           ></Input>
+          {isError && (
+            <Text color="red.500" mt={2}>
+              Please input a valid ENS name (ending with .eth)
+            </Text>
+          )}
         </FormControl>
       </Box>
     </Box>

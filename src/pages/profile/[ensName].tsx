@@ -130,6 +130,10 @@ const ProfilePage = () => {
       <Box
         minHeight="100vh"
         w="full"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
         color={color}
         backgroundColor={bg}
         className={` ${manrope.className}`}
