@@ -8,8 +8,10 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        "hero-img":
+        "hero-bg":
           "url('https://cdn.discordapp.com/attachments/911669935363752026/1122534199363113090/Desktop_-_12.png')",
+        "hero-bg-desktop":
+          "url('https://cdn.discordapp.com/attachments/911669935363752026/1122603145969807491/bg-desktop.png')",
 
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

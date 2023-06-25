@@ -14,7 +14,7 @@ export default function Home() {
     <>
       <Box
         color={color}
-        className={`flex bg-hero-img background-cover-bottom object-cover object-bottom min-h-screen flex-col items-center justify-center pb-[33vh] p-4 ${manrope.className}`}
+        className={`flex bg-hero-bg md:bg-hero-bg-desktop background-cover-bottom object-cover object-bottom min-h-screen flex-col items-center justify-center pb-[33vh] p-4 ${manrope.className}`}
       >
         <Navbar />
         <SearchAddress />

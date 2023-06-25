@@ -109,7 +109,7 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Support Me</ModalHeader>
+          <ModalHeader>Support</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex direction="row" gap={4}>

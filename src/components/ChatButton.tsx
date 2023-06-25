@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { IconButton, Text, VStack } from "@chakra-ui/react";
 import { FaRegComment } from "react-icons/fa";
+import { BsFillChatFill } from "react-icons/bs";
 
 interface ChatButtonProps {
   receiverAddress: any;
@@ -17,10 +18,10 @@ const ChatButton: React.FC<ChatButtonProps> = ({ receiverAddress }) => {
     <VStack>
       <IconButton
         aria-label="Send Message"
-        icon={<FaRegComment />}
+        icon={<BsFillChatFill />}
         onClick={handleOnClick}
       />
-      <Text fontSize="sm">Send Message</Text>
+      <Text fontSize="sm">Chat</Text>
     </VStack>
   );
 };

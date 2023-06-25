@@ -133,8 +133,14 @@ const ProfilePage = () => {
         color={color}
         backgroundColor={bg}
         className={` ${manrope.className}`}
+        p={4}
       >
-        <main className="w-full p-4 mt-20">
+        <Box
+          className="w-full p-4 mt-20"
+          bg={"white"}
+          maxW={96}
+          rounded={"2xl"}
+        >
           <Flex direction="column" w="full" align="center">
             <ENSRecordSkeleton isLoaded={!isLoading}>
               <Image
@@ -204,7 +210,7 @@ const ProfilePage = () => {
               )}
             </ENSRecordSkeleton>
           </Flex>
-        </main>
+        </Box>
       </Box>
     </>
   );
