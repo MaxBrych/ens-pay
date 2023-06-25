@@ -24,7 +24,11 @@ export default function Navbar() {
   const disconnect = useDisconnect();
   const network = useNetworkMismatch();
   return (
-    <Container maxW={"1200px"} py={2}>
+    <Container
+      maxW={"1000px"}
+      className="fixed w-[90vw]  rounded-xl top-4"
+      py={2}
+    >
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <ConnectWallet />
         {!address ? (

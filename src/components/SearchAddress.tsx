@@ -63,6 +63,8 @@ const SearchAddress = () => {
     <Box w={"full"}>
       <Box p={1} className="credit-card" mx="auto" w="full" maxW={"lg"}>
         <FormControl
+          as="form"
+          onSubmit={handleSubmit} // Added onSubmit prop
           id="addr"
           mt={1}
           justifyContent={"center"}
@@ -72,46 +74,38 @@ const SearchAddress = () => {
         >
           <FormLabel
             textAlign={"center"}
-            mb={4}
+            mb={3}
             textColor={"gray.700"}
-            fontSize={"4xl"}
+            fontSize={{ base: "3xl", md: "4xl" }}
             lineHeight={"1.1"}
             fontWeight={"black"}
           >
-            Search for your <br />
-            ETH address
+            Explore your Web3 bagpack
           </FormLabel>
-          <FormLabel
-            mb={8}
+          <Button
+            mb={4}
             textAlign={"center"}
-            fontSize={"lg"}
+            fontSize={{ base: "xs", md: "lg" }}
             fontWeight={"semibold"}
             textColor={"gray.500"}
+            type="submit"
+            className="cursor-default"
+            isLoading={isLoading}
+            loadingText="Resolving..."
+            colorScheme="transparent"
+            w={{ base: "auto", md: "auto" }}
           >
-            We&apos;ll find your ENS name
-          </FormLabel>
+            Show of your ENS Profile like you’ve never had before
+          </Button>
           <Input
-            borderRadius={"2xl"}
-            h={"20"}
+            borderRadius={{ base: "xl", md: "2xl" }}
+            h={{ base: "16", md: "20" }}
             fontWeight={"bold"}
             backgroundColor={"white"}
-            fontSize={"xl"}
+            fontSize={{ base: "lg", md: "xl" }}
             ref={addrRef}
             placeholder="ETH Address"
           ></Input>
-          <Button
-            size={"lg"}
-            w={"full"}
-            borderRadius={"full"}
-            mt={6}
-            fontSize={"lg"}
-            colorScheme="blue"
-            onClick={handleSubmit}
-            isLoading={isLoading}
-            loadingText="Resolving..."
-          >
-            Search Name
-          </Button>
         </FormControl>
       </Box>
     </Box>

@@ -134,7 +134,7 @@ const ProfilePage = () => {
         backgroundColor={bg}
         className={` ${manrope.className}`}
       >
-        <main className="w-full p-4 mt-4">
+        <main className="w-full p-4 mt-20">
           <Flex direction="column" w="full" align="center">
             <ENSRecordSkeleton isLoaded={!isLoading}>
               <Image
@@ -143,7 +143,7 @@ const ProfilePage = () => {
                   "https://cdn.discordapp.com/attachments/1070670506052821083/1116097197826658414/MaxCJack60_Front-facing_human_figure_styled_akin_to_a_Pokemon_p_9fe497d9-0642-49ce-829e-d00ad4a1876f.png"
                 }
                 alt="Avatar"
-                boxSize="200px"
+                boxSize={["128px", "128px", "160px"]}
                 rounded="full"
               />
             </ENSRecordSkeleton>

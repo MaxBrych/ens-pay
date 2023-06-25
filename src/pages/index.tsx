@@ -12,13 +12,11 @@ export default function Home() {
   const color = useColorModeValue("gray.700", "white");
   return (
     <>
-      <Navbar />
       <Box
-        bg={bg}
         color={color}
-        backgroundColor={"gray.50"}
-        className={`flex min-h-screen flex-col items-center justify-center p-4 ${manrope.className}`}
+        className={`flex bg-hero-img background-cover-bottom object-cover object-bottom min-h-screen flex-col items-center justify-center pb-[33vh] p-4 ${manrope.className}`}
       >
+        <Navbar />
         <SearchAddress />
       </Box>
     </>

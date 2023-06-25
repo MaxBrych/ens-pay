@@ -25,3 +25,9 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* styles.css */
+.background-cover-bottom {
+  background-size: cover;
+  background-position: center;
+}
