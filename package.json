@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@ensdomains/address-encoder": "^0.2.21",
     "@ensdomains/ensjs": "^3.0.0-alpha.64",
+    "@ensdomains/thorin": "^0.6.20",
     "@thirdweb-dev/react": "^3.13.0",
     "@thirdweb-dev/sdk": "^3.10.20",
     "@types/node": "20.2.5",

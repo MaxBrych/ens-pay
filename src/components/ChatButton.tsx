@@ -20,6 +20,8 @@ const ChatButton: React.FC<ChatButtonProps> = ({ receiverAddress }) => {
         aria-label="Send Message"
         icon={<BsFillChatFill />}
         onClick={handleOnClick}
+        rounded={"full"}
+        size={"lg"}
       />
       <Text fontSize="sm">Chat</Text>
     </VStack>

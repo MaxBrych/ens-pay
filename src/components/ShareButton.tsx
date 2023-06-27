@@ -26,6 +26,8 @@ export default function ShareButton() {
         aria-label="Send Message"
         icon={<FaShareAlt />}
         onClick={handleShare}
+        rounded={"full"}
+        size={"lg"}
       />
       <Text fontSize="sm">Share</Text>
     </VStack>

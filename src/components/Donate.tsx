@@ -102,8 +102,10 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
           aria-label="Send Message"
           icon={<FaCoffee />}
           onClick={onOpen}
+          rounded={"full"}
+          size={"lg"}
         />
-        <Text fontSize="sm">Support Me</Text>
+        <Text fontSize="sm">Support</Text>
       </VStack>
 
       <Modal isOpen={isOpen} onClose={onClose}>

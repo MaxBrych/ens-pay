@@ -153,7 +153,7 @@ const ProfilePage = () => {
                   "https://cdn.discordapp.com/attachments/1070670506052821083/1116097197826658414/MaxCJack60_Front-facing_human_figure_styled_akin_to_a_Pokemon_p_9fe497d9-0642-49ce-829e-d00ad4a1876f.png"
                 }
                 alt="Avatar"
-                boxSize={["128px", "128px", "160px"]}
+                boxSize={["96px", "128px", "160px"]}
                 rounded="full"
               />
             </ENSRecordSkeleton>
@@ -165,7 +165,7 @@ const ProfilePage = () => {
               </HStack>
             </ENSRecordSkeleton>
             <ENSRecordSkeleton isLoaded={!isLoading}>
-              <Heading mt={4} as="h1" size="lg" textAlign="center">
+              <Heading mt={4} as="h1" fontSize={"md"} textAlign="center">
                 {ensName || ""}
               </Heading>
             </ENSRecordSkeleton>
@@ -174,7 +174,12 @@ const ProfilePage = () => {
             </ENSRecordSkeleton>
             <ENSRecordSkeleton isLoaded={!isLoading}>
               {ensRecords.description && (
-                <Text textAlign="center" fontWeight={"medium"} color={color}>
+                <Text
+                  textAlign="center"
+                  fontSize={"sm"}
+                  fontWeight={"medium"}
+                  color={color}
+                >
                   {ensRecords.description}
                 </Text>
               )}
