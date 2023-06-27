@@ -158,7 +158,7 @@ const ProfilePage = () => {
               />
             </ENSRecordSkeleton>
             <ENSRecordSkeleton isLoaded={!isLoading}>
-              <HStack mt={2} spacing={2}>
+              <HStack mt={2} spacing={4}>
                 <ChatButton receiverAddress={address} />
                 <ShareButton />
                 <DonateButton receiverAddress={address} />
@@ -169,9 +169,9 @@ const ProfilePage = () => {
                 {ensName || ""}
               </Heading>
             </ENSRecordSkeleton>
-            <ENSRecordSkeleton isLoaded={!isLoading}>
+            {/*   <ENSRecordSkeleton isLoaded={!isLoading}>
               {address && <AddressCopy address={address} />}
-            </ENSRecordSkeleton>
+            </ENSRecordSkeleton> */}
             <ENSRecordSkeleton isLoaded={!isLoading}>
               {ensRecords.description && (
                 <Text
