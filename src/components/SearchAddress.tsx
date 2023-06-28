@@ -65,11 +65,10 @@ const SearchAddress = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (addrRef.current) {
-      const userInput = addrRef.current.value;
+      const userInput = addrRef.current.value.trim(); // trim to remove any leading or trailing spaces
 
-      if (userInput) {
-        router.push(`/profile/${userInput}`);
-      } else {
+      // Check if userInput is empty
+      if (!userInput) {
         toast({
           title: "Input is missing.",
           description: "Please input an ENS name or Ethereum address.",
@@ -77,7 +76,23 @@ const SearchAddress = () => {
           duration: 3000,
           isClosable: true,
         });
+        return;
       }
+
+      // Check if userInput ends with ".eth"
+      if (!userInput.endsWith(".eth")) {
+        toast({
+          title: "Invalid ENS Name",
+          description: "ENS name must end with .eth",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+
+      // If all checks pass, proceed to route to profile
+      router.push(`/profile/${userInput}`);
     }
   };
 

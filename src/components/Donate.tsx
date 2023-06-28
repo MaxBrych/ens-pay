@@ -99,13 +99,20 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
     <>
       <VStack>
         <IconButton
+          colorScheme="blackAlpha"
           aria-label="Send Message"
           icon={<FaCoffee />}
           onClick={onOpen}
           rounded={"full"}
           size={"lg"}
         />
-        <Text fontSize="sm">Support</Text>
+        <Text
+          fontSize="xs"
+          className="font-semibold"
+          textColor={"blackAlpha.600"}
+        >
+          Support
+        </Text>
       </VStack>
 
       <Modal isOpen={isOpen} onClose={onClose}>

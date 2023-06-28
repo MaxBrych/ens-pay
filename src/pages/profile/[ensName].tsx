@@ -21,8 +21,16 @@ import DonateButton from "@/components/Donate";
 import ChatButton from "@/components/ChatButton";
 import ShareButton from "@/components/ShareButton";
 import AddressCopy from "@/components/AddressCopy";
+import axios from "axios";
+
 const manrope = Manrope({ subsets: ["latin"] });
 const ethersDynamic: Promise<any> = import("ethers");
+interface NFT {
+  contractAddress: string;
+  tokenId: string;
+  image_url: string;
+  name: string;
+}
 
 // This component represents a skeleton state of an ENS record.
 function ENSRecordSkeleton({
@@ -47,6 +55,7 @@ function ENSRecordSkeleton({
 
 const ProfilePage = () => {
   const [provider, setProvider] = useState<any>(null);
+  const [nfts, setNfts] = useState<NFT[]>([]);
 
   const [address, setAddress] = useState(null);
 
@@ -55,6 +64,21 @@ const ProfilePage = () => {
 
   const [ensRecords, setEnsRecords] = useState<Record<string, string>>({});
   const [isLoading, setLoading] = useState(true);
+  const fetchNFTs = async (address: any) => {
+    try {
+      const { data } = await axios.get(
+        `https://api.alchemyapi.io/v1/nfts?userAddress=${address}`,
+        {
+          headers: {
+            "x-api-key": process.env.POLYGON_API_KEY,
+          },
+        }
+      );
+      setNfts(data.nfts);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     ethersDynamic.then((ethers) => {
@@ -64,7 +88,11 @@ const ProfilePage = () => {
       setProvider(provider);
     });
   }, []);
-
+  useEffect(() => {
+    if (address) {
+      fetchNFTs(address);
+    }
+  }, [address]);
   useEffect(() => {
     const getAllRecords = async (ensName: string) => {
       setLoading(true);
@@ -121,8 +149,8 @@ const ProfilePage = () => {
       getAllRecords(ensName as string);
     }
   }, [ensName, provider]);
-  const bg = useColorModeValue("gray.50", "#0a0b0d");
-  const color = useColorModeValue("gray.700", "white");
+  const bg = "gray.50";
+  const color = "gray.700";
 
   return (
     <>
@@ -144,6 +172,8 @@ const ProfilePage = () => {
           bg={"white"}
           maxW={96}
           rounded={"2xl"}
+          h="full"
+          minH={"90vh"}
         >
           <Flex direction="column" w="full" align="center">
             <ENSRecordSkeleton isLoaded={!isLoading}>
@@ -157,15 +187,9 @@ const ProfilePage = () => {
                 rounded="full"
               />
             </ENSRecordSkeleton>
+
             <ENSRecordSkeleton isLoaded={!isLoading}>
-              <HStack mt={2} spacing={4}>
-                <ChatButton receiverAddress={address} />
-                <ShareButton />
-                <DonateButton receiverAddress={address} />
-              </HStack>
-            </ENSRecordSkeleton>
-            <ENSRecordSkeleton isLoaded={!isLoading}>
-              <Heading mt={4} as="h1" fontSize={"md"} textAlign="center">
+              <Heading mt={4} mb={0} as="h1" fontSize={"md"} textAlign="center">
                 {ensName || ""}
               </Heading>
             </ENSRecordSkeleton>
@@ -183,6 +207,13 @@ const ProfilePage = () => {
                   {ensRecords.description}
                 </Text>
               )}
+            </ENSRecordSkeleton>
+            <ENSRecordSkeleton isLoaded={!isLoading}>
+              <HStack mt={2} spacing={8} rowGap={8}>
+                <ChatButton receiverAddress={address} />
+                <ShareButton />
+                <DonateButton receiverAddress={address} />
+              </HStack>
             </ENSRecordSkeleton>
             <ENSRecordSkeleton isLoaded={!isLoading}>
               {ensRecords["com.github"] && (
@@ -218,6 +249,20 @@ const ProfilePage = () => {
                 </Flex>
               )}
             </ENSRecordSkeleton>
+          </Flex>
+          <Flex direction="column" w="full" align="center">
+            {nfts.map((nft, index) => (
+              <Box key={index}>
+                <Text>NFT Contract Address: {nft.contractAddress}</Text>
+                <Text>NFT Token ID: {nft.tokenId}</Text>
+                <Image
+                  src={nft.image_url}
+                  alt={nft.name}
+                  width="100"
+                  height="100"
+                />
+              </Box>
+            ))}
           </Flex>
         </Box>
       </Box>

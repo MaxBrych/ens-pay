@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, IconButton, VStack, Text } from "@chakra-ui/react";
 import { FaShareAlt } from "react-icons/fa";
+import { color } from "framer-motion";
 
 export default function ShareButton() {
   const handleShare = async () => {
@@ -23,13 +24,20 @@ export default function ShareButton() {
   return (
     <VStack>
       <IconButton
+        colorScheme="blackAlpha"
         aria-label="Send Message"
         icon={<FaShareAlt />}
         onClick={handleShare}
         rounded={"full"}
         size={"lg"}
       />
-      <Text fontSize="sm">Share</Text>
+      <Text
+        fontSize="xs"
+        className="font-semibold"
+        textColor={"blackAlpha.600"}
+      >
+        Share
+      </Text>
     </VStack>
   );
 }

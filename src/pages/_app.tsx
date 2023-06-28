@@ -6,30 +6,57 @@ import {
   metamaskWallet,
 } from "@thirdweb-dev/react";
 import { mode } from "@chakra-ui/theme-tools"; // <-- import the mode function
+import { WagmiConfig, createConfig } from "wagmi";
+import {
+  ConnectKitProvider,
+  ConnectKitButton,
+  getDefaultConfig,
+} from "connectkit";
+
+const config = createConfig(
+  getDefaultConfig({
+    // Required API Keys
+    alchemyId: process.env.ALCHEMY_ID || "", // or infuraId
+    walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID || "",
+
+    // Required
+    appName: "ENS-Linktree",
+
+    // Optional
+    appDescription: "Your public ENS Bagpack 🎒",
+    appUrl: "https://family.co", // your app's url
+    appIcon: "https://family.co/logo.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
+  })
+);
 
 import type { AppProps } from "next/app";
 
 const activeChain = "polygon";
 const theme = extendTheme({
   styles: {
-    global: (props: any) => ({
+    global: {
       body: {
-        bg: mode("gray.100", "#0a0b0d")(props),
-        color: mode("gray.700", "white")(props),
+        bg: "gray.100",
+        color: "gray.700",
       },
-    }),
+    },
   },
 });
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThirdwebProvider
-      activeChain={activeChain}
-      supportedWallets={[coinbaseWallet(), metamaskWallet()]}
-    >
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </ThirdwebProvider>
+    <WagmiConfig config={config}>
+      <ConnectKitProvider>
+        <ThirdwebProvider
+          activeChain={activeChain}
+          supportedWallets={[coinbaseWallet(), metamaskWallet()]}
+        >
+          <ChakraProvider theme={theme}>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </ThirdwebProvider>
+        <ConnectKitButton />
+      </ConnectKitProvider>
+    </WagmiConfig>
   );
 }
