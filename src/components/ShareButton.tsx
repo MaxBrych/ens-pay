@@ -24,7 +24,8 @@ export default function ShareButton() {
   return (
     <VStack>
       <IconButton
-        colorScheme="blackAlpha"
+        color="black"
+        bg="gray.200"
         aria-label="Send Message"
         icon={<FaShareAlt />}
         onClick={handleShare}

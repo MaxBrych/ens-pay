@@ -13,7 +13,7 @@ module.exports = {
         "hero-bg-desktop":
           "url('https://cdn.discordapp.com/attachments/911669935363752026/1122603145969807491/bg-desktop.png')",
         "hero-bg-mobile":
-          "url('https://cdn.discordapp.com/attachments/911669935363752026/1123688747708448849/mobile_bg.png')",
+          "url('https://cdn.discordapp.com/attachments/911669935363752026/1123847046210781284/mobile_bg02.png')",
 
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

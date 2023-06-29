@@ -17,7 +17,8 @@ const ChatButton: React.FC<ChatButtonProps> = ({ receiverAddress }) => {
   return (
     <VStack>
       <IconButton
-        colorScheme="blackAlpha"
+        color="black"
+        bg="gray.200"
         aria-label="Send Message"
         icon={<BsFillChatFill />}
         onClick={handleOnClick}

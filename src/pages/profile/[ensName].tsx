@@ -22,6 +22,7 @@ import ChatButton from "@/components/ChatButton";
 import ShareButton from "@/components/ShareButton";
 import AddressCopy from "@/components/AddressCopy";
 import axios from "axios";
+import NavBarNew from "@/components/NavBarNew";
 
 const manrope = Manrope({ subsets: ["latin"] });
 const ethersDynamic: Promise<any> = import("ethers");
@@ -154,7 +155,7 @@ const ProfilePage = () => {
 
   return (
     <>
-      <Navbar />
+      <NavBarNew />
       <Box
         minHeight="100vh"
         w="full"
@@ -218,6 +219,7 @@ const ProfilePage = () => {
             <ENSRecordSkeleton isLoaded={!isLoading}>
               {ensRecords["com.github"] && (
                 <Flex
+                  fontSize={"sm"}
                   border={"1px"}
                   borderColor={"gray.200"}
                   align="center"
@@ -225,6 +227,7 @@ const ProfilePage = () => {
                   p={4}
                   backgroundColor={"white"}
                   borderRadius={"md"}
+                  className="transition-all duration-150 cursor-pointer hover:bg-gray-300"
                 >
                   <Link
                     display={"flex"}
@@ -236,6 +239,8 @@ const ProfilePage = () => {
                     h={"full"}
                     w={"full"}
                     isExternal
+                    fontSize={"sm"}
+                    textDecorationLine={"none"}
                   >
                     <Icon as={FaGithub} boxSize={6} mr={2} color={color} />
                     <Text

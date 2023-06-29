@@ -99,7 +99,8 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
     <>
       <VStack>
         <IconButton
-          colorScheme="blackAlpha"
+          color="black"
+          bg="gray.200"
           aria-label="Send Message"
           icon={<FaCoffee />}
           onClick={onOpen}
