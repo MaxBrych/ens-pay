@@ -23,15 +23,10 @@ import ShareButton from "@/components/ShareButton";
 import AddressCopy from "@/components/AddressCopy";
 import axios from "axios";
 import NavBarNew from "@/components/NavBarNew";
+import NFTList from "@/components/NFTList"; // adjust path to where your NFTList.tsx is located
 
 const manrope = Manrope({ subsets: ["latin"] });
 const ethersDynamic: Promise<any> = import("ethers");
-interface NFT {
-  contractAddress: string;
-  tokenId: string;
-  image_url: string;
-  name: string;
-}
 
 // This component represents a skeleton state of an ENS record.
 function ENSRecordSkeleton({
@@ -56,8 +51,6 @@ function ENSRecordSkeleton({
 
 const ProfilePage = () => {
   const [provider, setProvider] = useState<any>(null);
-  const [nfts, setNfts] = useState<NFT[]>([]);
-
   const [address, setAddress] = useState(null);
 
   const router = useRouter();
@@ -65,21 +58,6 @@ const ProfilePage = () => {
 
   const [ensRecords, setEnsRecords] = useState<Record<string, string>>({});
   const [isLoading, setLoading] = useState(true);
-  const fetchNFTs = async (address: any) => {
-    try {
-      const { data } = await axios.get(
-        `https://api.alchemyapi.io/v1/nfts?userAddress=${address}`,
-        {
-          headers: {
-            "x-api-key": process.env.ETH_API_KEY,
-          },
-        }
-      );
-      setNfts(data.nfts);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   useEffect(() => {
     ethersDynamic.then((ethers) => {
@@ -89,11 +67,6 @@ const ProfilePage = () => {
       setProvider(provider);
     });
   }, []);
-  useEffect(() => {
-    if (address) {
-      fetchNFTs(address);
-    }
-  }, [address]);
   useEffect(() => {
     const getAllRecords = async (ensName: string) => {
       setLoading(true);
@@ -169,14 +142,16 @@ const ProfilePage = () => {
         p={4}
       >
         <Box
-          className="w-full p-4 mt-20"
+          className="w-full p-4 pt-2 mt-20"
           bg={"white"}
           maxW={96}
           rounded={"2xl"}
           h="full"
-          minH={"90vh"}
+          minH={"80vh"}
+          border={"1px solid #E2E8F0"}
+          p={2}
         >
-          <Flex direction="column" w="full" align="center">
+          <Flex direction="column" p={4} w="full" align="center">
             <ENSRecordSkeleton isLoaded={!isLoading}>
               <Image
                 src={
@@ -194,9 +169,6 @@ const ProfilePage = () => {
                 {ensName || ""}
               </Heading>
             </ENSRecordSkeleton>
-            {/*   <ENSRecordSkeleton isLoaded={!isLoading}>
-              {address && <AddressCopy address={address} />}
-            </ENSRecordSkeleton> */}
             <ENSRecordSkeleton isLoaded={!isLoading}>
               {ensRecords.description && (
                 <Text
@@ -219,14 +191,13 @@ const ProfilePage = () => {
             <ENSRecordSkeleton isLoaded={!isLoading}>
               {ensRecords["com.github"] && (
                 <Flex
-                  fontSize={"sm"}
                   border={"1px"}
                   borderColor={"gray.200"}
                   align="center"
                   mt={2}
                   p={4}
                   backgroundColor={"white"}
-                  borderRadius={"md"}
+                  borderRadius={"lg"}
                   className="transition-all duration-150 cursor-pointer hover:bg-gray-300"
                 >
                   <Link
@@ -239,14 +210,14 @@ const ProfilePage = () => {
                     h={"full"}
                     w={"full"}
                     isExternal
-                    fontSize={"sm"}
-                    textDecorationLine={"none"}
                   >
                     <Icon as={FaGithub} boxSize={6} mr={2} color={color} />
                     <Text
-                      fontSize={"lg"}
+                      textDecorationLine={"none"}
+                      fontSize={"sm"}
                       fontWeight={"semibold"}
                       textColor={color}
+                      className="underline-none"
                     >
                       {ensRecords["com.github"]}
                     </Text>
@@ -255,20 +226,8 @@ const ProfilePage = () => {
               )}
             </ENSRecordSkeleton>
           </Flex>
-          <Flex direction="column" w="full" align="center">
-            {nfts.map((nft, index) => (
-              <Box key={index}>
-                <Text>NFT Contract Address: {nft.contractAddress}</Text>
-                <Text>NFT Token ID: {nft.tokenId}</Text>
-                <Image
-                  src={nft.image_url}
-                  alt={nft.name}
-                  width="100"
-                  height="100"
-                />
-              </Box>
-            ))}
-          </Flex>
+
+          <NFTList ownerAddress={address} />
         </Box>
       </Box>
     </>
