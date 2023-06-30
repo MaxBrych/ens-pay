@@ -152,7 +152,7 @@ const SearchAddress = () => {
           )}
         </FormControl>
         <Link
-          className="w-full mt-8 text-sm font-semibold text-center text-gray-500 underline underline-offset-1"
+          className="w-full mt-8 text-xs font-semibold text-center text-gray-500 underline md:text-sm underline-offset-1"
           href="https://app.ens.domains/"
           target="_blank"
         >
