@@ -152,11 +152,11 @@ const SearchAddress = () => {
           )}
         </FormControl>
         <Link
-          className="mt-4 text-sm font-medium text-center text-gray-700 underline underline-offset-1"
+          className="w-full mt-8 text-sm font-semibold text-center text-gray-500 underline underline-offset-1"
           href="https://app.ens.domains/"
           target="_blank"
         >
-          Want to get your own ENS name? Get one here!
+          Get a ENS name here!
         </Link>
       </Box>
     </Box>
