@@ -9,6 +9,7 @@ import {
   useToast,
   Text,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 const ethersDynamic: Promise<any> = import("ethers");
 
@@ -150,6 +151,13 @@ const SearchAddress = () => {
             </Text>
           )}
         </FormControl>
+        <Link
+          className="mt-4 text-sm font-medium text-center text-gray-700 underline underline-offset-1"
+          href="https://app.ens.domains/"
+          target="_blank"
+        >
+          Want to get your own ENS name? Get one here!
+        </Link>
       </Box>
     </Box>
   );
