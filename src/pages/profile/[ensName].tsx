@@ -142,12 +142,12 @@ const ProfilePage = () => {
         p={4}
       >
         <Box
-          className="w-full p-4 pt-2 mt-20"
+          className="w-full p-4 pt-2 mt-16"
           bg={"white"}
           maxW={96}
           rounded={"2xl"}
           h="full"
-          minH={"80vh"}
+          minH={"85vh"}
           border={"1px solid #E2E8F0"}
           p={2}
         >
