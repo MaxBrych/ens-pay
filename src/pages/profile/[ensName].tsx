@@ -165,7 +165,7 @@ const ProfilePage = () => {
             </ENSRecordSkeleton>
 
             <ENSRecordSkeleton isLoaded={!isLoading}>
-              <Heading mt={4} mb={0} as="h1" fontSize={"md"} textAlign="center">
+              <Heading as="h1" fontSize={"lg"} h={"10px"} textAlign="center">
                 {ensName || ""}
               </Heading>
             </ENSRecordSkeleton>
@@ -173,7 +173,7 @@ const ProfilePage = () => {
               {ensRecords.description && (
                 <Text
                   textAlign="center"
-                  fontSize={"sm"}
+                  fontSize={{ base: "xs", md: "sm" }}
                   fontWeight={"medium"}
                   color={color}
                 >
@@ -195,6 +195,7 @@ const ProfilePage = () => {
                   borderColor={"gray.200"}
                   align="center"
                   mt={2}
+                  mb={0}
                   p={4}
                   backgroundColor={"white"}
                   borderRadius={"lg"}

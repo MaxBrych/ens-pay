@@ -10,13 +10,12 @@ const alchemy = new Alchemy(config);
 
 // Define a type for the NFTs.
 type NFT = {
+  tokenId: string;
   title: string;
   description: string;
-  metadata: {
-    image: string;
-  };
-  contractAddress: string;
-  tokenId: string;
+  media?: Array<{
+    gateway: string;
+  }>;
 };
 
 interface NFTListProps {
@@ -56,48 +55,64 @@ function NFTList({ ownerAddress }: NFTListProps) {
   }
 
   return (
-    <SimpleGrid minChildWidth="120px" spacing="40px" gap={4}>
-      {nfts.slice(0, itemsToShow).map(
-        (nft, index) => (
-          console.log(nft),
-          (
-            <Box height="80px" key={index}>
-              <a
-                href={`https://opensea.io/assets/${nft.contractAddress}/${nft.tokenId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={nft.rawMetadata?.image}
-                  alt={"not found"}
-                  className="object-cover w-full h-128 rounded-t-md"
-                />
-                <Heading fontSize={"sm"} className="text-sm font-semibold">
-                  {nft.title}
-                </Heading>
-              </a>
-            </Box>
+    <Box p={4} pt={1}>
+      <Heading
+        fontSize={{ base: "md", md: "lg" }}
+        mb={2}
+        className="text-lg font-semibold"
+      >
+        {" "}
+        NFTs{" "}
+      </Heading>
+      <SimpleGrid minChildWidth="120px" spacing="40px" gap={4}>
+        {nfts.slice(0, itemsToShow).map(
+          (nft, index) => (
+            console.log(nft),
+            (
+              <Box height="80px" key={index}>
+                <a
+                  href={`https://opensea.io/assets/${nft.contractAddress}/${nft.tokenId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {nft.media && nft.media[0] && (
+                    <img
+                      src={nft.media[0].gateway}
+                      alt={"nft.title"}
+                      className="mb-1 rounded-xl"
+                    />
+                  )}
+
+                  <Heading
+                    fontSize={{ base: "xs", md: "sm" }}
+                    className="text-sm font-semibold"
+                  >
+                    {nft.title}
+                  </Heading>
+                </a>
+              </Box>
+            )
           )
-        )
-      )}
-      {showAll ? (
-        <Button onClick={showLess}>Show Less</Button>
-      ) : (
-        itemsToShow < nfts.length && (
-          <Button
-            colorScheme="gray"
-            textColor={"gray.700"}
-            bg={"gray.100"}
-            fontSize={"sm"}
-            rounded={"full"}
-            height={"36px"}
-            onClick={viewAll}
-          >
-            View All
-          </Button>
-        )
-      )}
-    </SimpleGrid>
+        )}
+        {showAll ? (
+          <Button onClick={showLess}>Show Less</Button>
+        ) : (
+          itemsToShow < nfts.length && (
+            <Button
+              colorScheme="gray"
+              textColor={"gray.700"}
+              bg={"gray.100"}
+              fontSize={"sm"}
+              rounded={"full"}
+              height={"36px"}
+              onClick={viewAll}
+            >
+              View All
+            </Button>
+          )
+        )}
+      </SimpleGrid>
+    </Box>
   );
 }
 
