@@ -71,7 +71,7 @@ const ProfilePage = () => {
         `https://api.alchemyapi.io/v1/nfts?userAddress=${address}`,
         {
           headers: {
-            "x-api-key": process.env.POLYGON_API_KEY,
+            "x-api-key": process.env.ETH_API_KEY,
           },
         }
       );
