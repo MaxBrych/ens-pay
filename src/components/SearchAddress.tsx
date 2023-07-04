@@ -104,43 +104,17 @@ const SearchAddress = () => {
           as="form"
           onSubmit={handleSubmit}
           id="addr"
-          mt={1}
           justifyContent={"center"}
           alignItems={"center"}
           display={"flex"}
           flexDirection={"column"}
         >
-          <FormLabel
-            textAlign={"center"}
-            mb={3}
-            textColor={"gray.700"}
-            fontSize={{ base: "3xl", md: "4xl" }}
-            lineHeight={"1.1"}
-            fontWeight={"black"}
-          >
-            Explore your Web3 bagpack
-          </FormLabel>
-          <Button
-            mb={4}
-            textAlign={"center"}
-            fontSize={{ base: "xs", md: "lg" }}
-            fontWeight={"semibold"}
-            textColor={"gray.500"}
-            type="submit"
-            className="cursor-default"
-            isLoading={isLoading}
-            loadingText="Resolving..."
-            colorScheme="transparent"
-            w={{ base: "auto", md: "auto" }}
-          >
-            Show of your ENS Profile like you’ve never had before
-          </Button>
           <Input
-            borderRadius={{ base: "xl", md: "2xl" }}
-            h={{ base: "16", md: "20" }}
-            fontWeight={"bold"}
-            backgroundColor={"white"}
-            fontSize={{ base: "lg", md: "xl" }}
+            borderRadius={"full"}
+            h={{ base: "6", md: "12" }}
+            fontWeight={"medium"}
+            backgroundColor={"gray.200"}
+            fontSize={{ base: "xs", md: "sm" }}
             ref={addrRef}
             placeholder="ETH Address or ENS Name"
             isInvalid={isError}
@@ -151,13 +125,6 @@ const SearchAddress = () => {
             </Text>
           )}
         </FormControl>
-        <Link
-          className="w-full mt-8 text-xs font-semibold text-center text-gray-500 underline md:text-sm underline-offset-1"
-          href="https://app.ens.domains/"
-          target="_blank"
-        >
-          Get a ENS name here!
-        </Link>
       </Box>
     </Box>
   );

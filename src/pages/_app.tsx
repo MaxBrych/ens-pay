@@ -20,7 +20,7 @@ const config = createConfig(
     walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID || "",
 
     // Required
-    appName: "ENS-Linktree",
+    appName: "ENS-Pay",
 
     // Optional
     appDescription: "Your public ENS Bagpack 🎒",
@@ -36,7 +36,7 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        bg: "gray.100",
+        bg: "white",
         color: "gray.700",
       },
     },
