@@ -77,7 +77,7 @@ const UserTransactions = () => {
 
       setProfiles((prevProfiles) => ({ ...prevProfiles, ...profilesToUpdate }));
     });
-  }, [isLoadingTransactions, ensProvider, transactions]);
+  }, [isLoadingTransactions, ensProvider, transactions, profiles]);
 
   return isLoadingTransactions ? (
     <div>Loading transactions...</div>
