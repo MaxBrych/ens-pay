@@ -10,10 +10,11 @@ import {
   Icon,
   Link,
   Skeleton,
+  Container,
   useColorModeValue,
   HStack,
 } from "@chakra-ui/react";
-import { FaGithub } from "react-icons/fa";
+import { LuGithub } from "react-icons/lu";
 import { ethers } from "ethers";
 import { Inter, Manrope, Share } from "next/font/google";
 import Navbar from "@/components/NavBar";
@@ -24,6 +25,9 @@ import AddressCopy from "@/components/AddressCopy";
 import axios from "axios";
 import NavBarNew from "@/components/NavBarNew";
 import NFTList from "@/components/NFTList"; // adjust path to where your NFTList.tsx is located
+import AppBar from "@/components/AppBar";
+import Recommendation from "@/components/Recommendation";
+import { Avatar } from "connectkit";
 
 const manrope = Manrope({ subsets: ["latin"] });
 const ethersDynamic: Promise<any> = import("ethers");
@@ -127,111 +131,114 @@ const ProfilePage = () => {
   const color = "gray.700";
 
   return (
-    <>
-      <NavBarNew />
-      <Box
-        minHeight="100vh"
-        w="full"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        color={color}
-        backgroundColor={bg}
-        className={` ${manrope.className}`}
-        p={4}
-      >
+    <Container display={"flex"}>
+      <AppBar />
+      <Box>
         <Box
-          className="w-full p-4 pt-2 mt-16"
-          bg={"white"}
-          maxW={96}
-          rounded={"2xl"}
-          h="full"
-          minH={"85vh"}
-          border={"1px solid #E2E8F0"}
-          p={2}
+          minHeight="100vh"
+          w="full"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          color={color}
+          backgroundColor={bg}
+          className={` ${manrope.className}`}
+          p={4}
         >
-          <Flex direction="column" p={4} w="full" align="center">
-            <ENSRecordSkeleton isLoaded={!isLoading}>
-              <Image
-                src={
-                  ensRecords.avatar ||
-                  "https://cdn.discordapp.com/attachments/1070670506052821083/1116097197826658414/MaxCJack60_Front-facing_human_figure_styled_akin_to_a_Pokemon_p_9fe497d9-0642-49ce-829e-d00ad4a1876f.png"
-                }
-                alt="Avatar"
-                boxSize={["96px", "128px", "160px"]}
-                rounded="full"
-              />
-            </ENSRecordSkeleton>
+          <Box
+            className="w-full p-4 pt-2 mt-16"
+            bg={"white"}
+            maxW={96}
+            rounded={"2xl"}
+            h="full"
+            minH={"85vh"}
+            border={"1px solid #E2E8F0"}
+            p={2}
+          >
+            <Flex direction="column" p={4} w="full" align="center">
+              <ENSRecordSkeleton isLoaded={!isLoading}>
+                <Image
+                  src={
+                    ensRecords.avatar ||
+                    "https://cdn.discordapp.com/attachments/1070670506052821083/1116097197826658414/MaxCJack60_Front-facing_human_figure_styled_akin_to_a_Pokemon_p_9fe497d9-0642-49ce-829e-d00ad4a1876f.png"
+                  }
+                  alt="Avatar"
+                  boxSize={["96px", "128px", "160px"]}
+                  rounded="full"
+                />
+              </ENSRecordSkeleton>
 
-            <ENSRecordSkeleton isLoaded={!isLoading}>
-              <Heading as="h1" fontSize={"lg"} h={"10px"} textAlign="center">
-                {ensName || ""}
-              </Heading>
-            </ENSRecordSkeleton>
-            <ENSRecordSkeleton isLoaded={!isLoading}>
-              {ensRecords.description && (
-                <Text
-                  textAlign="center"
-                  fontSize={{ base: "xs", md: "sm" }}
-                  fontWeight={"medium"}
-                  color={color}
-                >
-                  {ensRecords.description}
-                </Text>
-              )}
-            </ENSRecordSkeleton>
-            <ENSRecordSkeleton isLoaded={!isLoading}>
-              <HStack mt={2} spacing={8} rowGap={8}>
-                <ChatButton receiverAddress={address} />
-                <ShareButton />
-                <DonateButton receiverAddress={address} />
-              </HStack>
-            </ENSRecordSkeleton>
-            <ENSRecordSkeleton isLoaded={!isLoading}>
-              {ensRecords["com.github"] && (
-                <Flex
-                  border={"1px"}
-                  borderColor={"gray.200"}
-                  align="center"
-                  mt={2}
-                  mb={0}
-                  p={4}
-                  backgroundColor={"white"}
-                  borderRadius={"lg"}
-                  className="transition-all duration-150 cursor-pointer hover:bg-gray-300"
-                >
-                  <Link
-                    display={"flex"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    gap={2}
+              <ENSRecordSkeleton isLoaded={!isLoading}>
+                <Heading as="h1" fontSize={"lg"} h={"10px"} textAlign="center">
+                  {ensName || ""}
+                </Heading>
+              </ENSRecordSkeleton>
+              <ENSRecordSkeleton isLoaded={!isLoading}>
+                {ensRecords.description && (
+                  <Text
+                    textAlign="center"
+                    fontSize={{ base: "xs", md: "sm" }}
+                    fontWeight={"medium"}
                     color={color}
-                    href={ensRecords["com.github"]}
-                    h={"full"}
-                    w={"full"}
-                    isExternal
                   >
-                    <Icon as={FaGithub} boxSize={6} mr={2} color={color} />
-                    <Text
-                      textDecorationLine={"none"}
-                      fontSize={"sm"}
-                      fontWeight={"semibold"}
-                      textColor={color}
-                      className="underline-none"
+                    {ensRecords.description}
+                  </Text>
+                )}
+              </ENSRecordSkeleton>
+              <ENSRecordSkeleton isLoaded={!isLoading}>
+                <HStack mt={2} spacing={8} rowGap={8}>
+                  <ChatButton receiverAddress={address} />
+                  <ShareButton />
+                  <DonateButton receiverAddress={address} />
+                </HStack>
+              </ENSRecordSkeleton>
+              <ENSRecordSkeleton isLoaded={!isLoading}>
+                {ensRecords["com.github"] && (
+                  <Flex
+                    border={"1px"}
+                    borderColor={"gray.200"}
+                    align="center"
+                    mt={2}
+                    mb={0}
+                    p={4}
+                    backgroundColor={"white"}
+                    borderRadius={"lg"}
+                    className="transition-all duration-150 cursor-pointer hover:bg-gray-300"
+                  >
+                    <Link
+                      display={"flex"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      gap={2}
+                      color={color}
+                      href={ensRecords["com.github"]}
+                      h={"full"}
+                      w={"full"}
+                      isExternal
                     >
-                      {ensRecords["com.github"]}
-                    </Text>
-                  </Link>
-                </Flex>
-              )}
-            </ENSRecordSkeleton>
-          </Flex>
+                      <Icon as={LuGithub} boxSize={6} mr={2} color={color} />
+                      <Text
+                        textDecorationLine={"none"}
+                        fontSize={"sm"}
+                        fontWeight={"semibold"}
+                        textColor={color}
+                        className="underline-none"
+                      >
+                        {ensRecords["com.github"]}
+                      </Text>
+                    </Link>
+                  </Flex>
+                )}
+              </ENSRecordSkeleton>
+            </Flex>
 
-          <NFTList ownerAddress={address} />
+            <NFTList ownerAddress={address} />
+          </Box>
         </Box>
       </Box>
-    </>
+      <Recommendation />
+    </Container>
   );
 };
 

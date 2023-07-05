@@ -11,7 +11,9 @@ import {
   ConnectKitProvider,
   ConnectKitButton,
   getDefaultConfig,
+  SIWESession,
 } from "connectkit";
+import { siweClient } from "@/utils/siweClient";
 
 const config = createConfig(
   getDefaultConfig({
@@ -46,16 +48,26 @@ const theme = extendTheme({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={config}>
-      <ConnectKitProvider>
-        <ThirdwebProvider
-          activeChain={activeChain}
-          supportedWallets={[coinbaseWallet(), metamaskWallet()]}
-        >
-          <ChakraProvider theme={theme}>
-            <Component {...pageProps} />
-          </ChakraProvider>
-        </ThirdwebProvider>
-      </ConnectKitProvider>
+      <siweClient.Provider
+        // Optional parameters
+        enabled={true} // defaults true
+        nonceRefetchInterval={300000} // in milliseconds, defaults to 5 minutes
+        sessionRefetchInterval={300000} // in milliseconds, defaults to 5 minutes
+        signOutOnDisconnect={true} // defaults true
+        signOutOnAccountChange={true} // defaults true
+        signOutOnNetworkChange={true} // defaults true
+      >
+        <ConnectKitProvider>
+          <ThirdwebProvider
+            activeChain={activeChain}
+            supportedWallets={[coinbaseWallet(), metamaskWallet()]}
+          >
+            <ChakraProvider theme={theme}>
+              <Component {...pageProps} />
+            </ChakraProvider>
+          </ThirdwebProvider>
+        </ConnectKitProvider>
+      </siweClient.Provider>
     </WagmiConfig>
   );
 }
