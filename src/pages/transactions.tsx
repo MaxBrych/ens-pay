@@ -13,14 +13,14 @@ export default function Transactions() {
   return (
     <Container
       display={"flex"}
-      maxWidth={"4xl"}
-      w={{ base: "full", md: "4xl" }}
+      justifyContent={"space-between"}
+      maxWidth={"6xl"}
+      w={"full"}
     >
       <AppBar />
-      <Box w={{ base: "full", md: "50vw" }}>
-        <h1>Transactions</h1>
+      <Container width={"full"}>
         <UserTransactions />
-      </Box>
+      </Container>
       <Recommendation />
     </Container>
   );

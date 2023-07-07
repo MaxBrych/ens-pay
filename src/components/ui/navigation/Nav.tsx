@@ -24,7 +24,7 @@ export default function Nav({ cta, ensName }: NavProps) {
       href={`/${cta.toLowerCase()}`}
       onClick={() => handleClick(cta)}
     >
-      <HiOutlineHome />
+      <HiOutlineHome size={20} />
       {cta}
     </Link>
   );

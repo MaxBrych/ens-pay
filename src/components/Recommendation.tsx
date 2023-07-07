@@ -4,7 +4,7 @@ import SearchAddress from "./SearchAddress";
 
 export default function Recommendation() {
   return (
-    <Box className="hidden w-full min-h-screen border md:flex md:flex-col max-w-1/4 border-l-gray-300">
+    <Box className="fixed top-0 z-50 flex justify-between md:w-[280px] gap-3 p-4 bg-white border md:static w-[100vw] max-h-16 md:max-h-screen md:min-h-screen border-t-gray-300 md:border-l-gray-300 md:flex-col">
       <Box className="fixed z-50 flex items-center justify-center w-1/4 h-16 bg-white y-0">
         <SearchAddress />
       </Box>

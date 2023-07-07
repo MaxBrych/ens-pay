@@ -1,17 +1,44 @@
 import { Box } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ConnectKit } from "./ConnectKit";
 import { ConnectKitButton } from "connectkit";
 import { ConnectWallet } from "@thirdweb-dev/react";
 import Nav from "./ui/navigation/Nav";
 import Image from "next/image";
-import { useAccount } from "wagmi";
+import { useAccount, useEnsName, useEnsResolver } from "wagmi";
+import Navbar from "./NavBar";
+
+const ethersDynamic: Promise<any> = import("ethers");
 
 export default function AppBar() {
   const { address } = useAccount();
+  const [provider, setProvider] = useState<any>(null);
+  const [ensName, setENSName] = useState<string | null>(null);
+
+  useEffect(() => {
+    ethersDynamic.then((ethers) => {
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://spring-red-dinghy.discover.quiknode.pro/54a9c39cdfc6a8085cfb75f545ce67a66249d4ac/"
+      );
+      setProvider(provider);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (address && provider) {
+      const resolveENSName = async () => {
+        const resolvedName = await provider.lookupAddress(address);
+        return resolvedName ?? address;
+      };
+
+      resolveENSName().then((ensName) => {
+        setENSName(ensName);
+      });
+    }
+  }, [address, provider]);
 
   return (
-    <Box className="fixed bottom-0 z-50 flex justify-between md:w-full gap-3 p-4 bg-white border md:static w-[100vw] max-h-16 md:max-h-screen md:min-h-screen max-w-1/4 border-t-gray-300 md:border-r-gray-300 md:flex-col">
+    <Box className="fixed bottom-0 z-50 flex justify-between md:w-[280px] gap-3 p-4 bg-white border md:static w-[100vw] max-h-16 md:max-h-screen md:min-h-screen border-t-gray-300 md:border-r-gray-300 md:flex-col">
       <Box
         flexDirection={"column"}
         display={"flex"}
@@ -30,11 +57,11 @@ export default function AppBar() {
         <Nav cta="Home" />
         <Nav cta="Contacts" />
         <Nav cta="Transactions" />
-        <Nav cta="Profile" ensName={address} />
+        {ensName && <Nav cta="Profile" ensName={ensName} />}
         <Nav cta="Settings" />
       </Box>
-      <Box className="fixed z-50 top-4 right-4 md:right-auto md:left-auto md:bottom-8">
-        <ConnectKitButton mode="light" theme="soft" />
+      <Box className="fixed z-50 top-4 right-4 md:right-auto md:left-auto md:top-auto md:bottom-8">
+        <Navbar />
       </Box>
     </Box>
   );
