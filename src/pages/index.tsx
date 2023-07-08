@@ -7,7 +7,7 @@ import { ConnectKitButton } from "connectkit";
 import { ConnectKit } from "@/components/ConnectKit";
 import NavBarNew from "@/components/NavBarNew";
 import AppBar from "@/components/AppBar";
-import Recommendation from "@/components/Sidebar";
+import Sidebar from "@/components/Sidebar";
 import Main from "@/components/Main";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,10 +23,13 @@ export default function Home() {
       justifyContent={"space-between"}
       maxWidth={"6xl"}
       w={"full"}
+      p={0}
     >
       <AppBar />
-      <Container width={"full"}>Feed</Container>
-      <Recommendation />
+      <Container width={"full"} pt={"16"}>
+        Feed
+      </Container>
+      <Sidebar />
     </Container>
   );
 }

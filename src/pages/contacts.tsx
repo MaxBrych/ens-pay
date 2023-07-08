@@ -10,9 +10,12 @@ export default function Contacts() {
       justifyContent={"space-between"}
       maxWidth={"6xl"}
       w={"full"}
+      p={0}
     >
       <AppBar />
-      <Container width={"full"}>Feed</Container>
+      <Container width={"full"} pt={"16"}>
+        Feed
+      </Container>
       <Sidebar />
     </Container>
   );

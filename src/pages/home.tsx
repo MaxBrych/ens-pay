@@ -1,9 +1,9 @@
-import React from "react";
 import AppBar from "@/components/AppBar";
 import Sidebar from "@/components/Sidebar";
-import { Box, Container } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
+import React from "react";
 
-export default function Settings() {
+export default function Home() {
   return (
     <Container
       display={"flex"}

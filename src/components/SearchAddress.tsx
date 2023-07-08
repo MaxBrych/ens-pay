@@ -98,34 +98,32 @@ const SearchAddress = () => {
   };
 
   return (
-    <Box w={"full"}>
-      <Box p={1} className="credit-card" mx="auto" w="full" maxW={"lg"}>
-        <FormControl
-          as="form"
-          onSubmit={handleSubmit}
-          id="addr"
-          justifyContent={"center"}
-          alignItems={"center"}
-          display={"flex"}
-          flexDirection={"column"}
-        >
-          <Input
-            borderRadius={"full"}
-            h={{ base: "6", md: "12" }}
-            fontWeight={"medium"}
-            backgroundColor={"gray.200"}
-            fontSize={{ base: "xs", md: "sm" }}
-            ref={addrRef}
-            placeholder="ETH Address or ENS Name"
-            isInvalid={isError}
-          ></Input>
-          {isError && (
-            <Text color="red.500" mt={2}>
-              Please input a valid ENS name (ending with .eth)
-            </Text>
-          )}
-        </FormControl>
-      </Box>
+    <Box p={1} mx="auto" w="full" maxW={"lg"}>
+      <FormControl
+        as="form"
+        onSubmit={handleSubmit}
+        id="addr"
+        justifyContent={"center"}
+        alignItems={"center"}
+        display={"flex"}
+        flexDirection={"column"}
+      >
+        <Input
+          borderRadius={"full"}
+          h={{ base: "10", md: "12" }}
+          fontWeight={"medium"}
+          backgroundColor={"gray.200"}
+          fontSize={"sm"}
+          ref={addrRef}
+          placeholder="ETH Address or ENS Name"
+          isInvalid={isError}
+        ></Input>
+        {isError && (
+          <Text color="red.500" mt={2}>
+            Please input a valid ENS name (ending with .eth)
+          </Text>
+        )}
+      </FormControl>
     </Box>
   );
 };

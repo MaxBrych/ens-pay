@@ -1,9 +1,10 @@
-import React from "react";
 import AppBar from "@/components/AppBar";
+import SearchAddress from "@/components/SearchAddress";
 import Sidebar from "@/components/Sidebar";
-import { Box, Container } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
+import React from "react";
 
-export default function Settings() {
+export default function Search() {
   return (
     <Container
       display={"flex"}
@@ -14,7 +15,7 @@ export default function Settings() {
     >
       <AppBar />
       <Container width={"full"} pt={"16"}>
-        Feed
+        <SearchAddress />
       </Container>
       <Sidebar />
     </Container>

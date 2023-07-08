@@ -16,9 +16,10 @@ export default function Transactions() {
       justifyContent={"space-between"}
       maxWidth={"6xl"}
       w={"full"}
+      p={0}
     >
       <AppBar />
-      <Container width={"full"}>
+      <Container width={"full"} pt={"16"}>
         <UserTransactions />
       </Container>
       <Sidebar />

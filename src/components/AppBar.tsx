@@ -28,10 +28,6 @@ export default function AppBar() {
 
   const displayIcon = useBreakpointValue({ base: "none", md: "flex" });
 
-  const SidebarVisibilityButton = sidebarVisible
-    ? HiOutlineViewList
-    : HiOutlineSearch;
-
   useEffect(() => {
     ethersDynamic.then((ethers) => {
       const provider = new ethers.providers.JsonRpcProvider(
@@ -55,11 +51,13 @@ export default function AppBar() {
   }, [address, provider]);
 
   return (
-    <Box className="fixed bottom-0 z-50 flex justify-between md:w-[280px] gap-3 md:p-4 bg-white border md:static w-[100vw] max-h-16 md:max-h-screen md:min-h-screen border-t-gray-300 md:border-r-gray-300 md:flex-col">
+    <Box className="fixed bottom-0 z-50 flex justify-between md:w-[280px] md:gap-3 md:p-4 bg-white border md:static w-[100vw] max-h-16 md:max-h-screen md:min-h-screen border-t-gray-300 md:border-r-gray-300 md:flex-col">
       <Box
         flexDirection={{ base: "row", md: "column" }}
         display={"flex"}
         gap={"2"}
+        className="flex justify-between w-full"
+        px={4}
       >
         <Image
           src={
@@ -73,24 +71,15 @@ export default function AppBar() {
         <Nav cta="Home" Icon={HiOutlineHome} />
         <Nav cta="Contacts" Icon={HiOutlineUserGroup} />
         <Nav cta="Transactions" Icon={HiOutlineDocumentText} />
-        {ensName && (
-          <Nav cta="Profile" ensName={ensName} Icon={HiOutlineUser} />
-        )}
+
         {displayIcon === "flex" && (
           <Nav cta="Settings" Icon={HiOutlineViewList} />
         )}
-        {displayIcon === "none" && (
-          <Nav
-            cta="Search"
-            onClick={() => setSidebarVisible(!sidebarVisible)}
-            Icon={SidebarVisibilityButton}
-          />
-        )}
+        {displayIcon === "none" && <Nav cta="Search" Icon={HiOutlineSearch} />}
       </Box>
-      <Box className="fixed z-50 top-4 right-4 md:right-auto md:left-auto md:top-auto md:bottom-8">
+      <Box className="z-50 hidden top-4 right-4 md:right-auto md:left-auto md:top-auto md:bottom-8">
         <Navbar />
       </Box>
-      {sidebarVisible && displayIcon === "none" && <Sidebar />}
     </Box>
   );
 }

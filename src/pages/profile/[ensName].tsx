@@ -137,6 +137,7 @@ const ProfilePage = () => {
       justifyContent={"space-between"}
       maxWidth={"6xl"}
       w={"full"}
+      p={0}
     >
       <AppBar />
 
