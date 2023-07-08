@@ -1,5 +1,6 @@
 import AppBar from "@/components/AppBar";
 import Sidebar from "@/components/Sidebar";
+import HomeFeed from "@/components/sections/HomeFeed";
 import { Container } from "@chakra-ui/react";
 import React from "react";
 
@@ -14,7 +15,7 @@ export default function Home() {
     >
       <AppBar />
       <Container width={"full"} pt={"16"}>
-        Feed
+        <HomeFeed />
       </Container>
       <Sidebar />
     </Container>

@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Sidebar() {
   return (
-    <Box className="fixed flex w-[100vw] h-16 top-0 z-40 items-center md:items-start justify-start md:w-[280px] gap-3 px-4 bg-white border md:static  md:h-full md:max-h-screen md:min-h-screen border-b-gray-300 md:border-l-gray-300 md:flex-col">
+    <Box className="fixed flex w-[100vw] h-16 top-0 z-40 items-center md:items-start justify-start md:w-[280px] gap-3 px-4 bg-white md:static md:h-full md:max-h-screen md:min-h-screen border-b-gray-300 md:border-l-gray-300 md:flex-col">
       <Box className="flex md:hidden">
         <Navbar />
       </Box>
@@ -19,7 +19,7 @@ export default function Sidebar() {
         alt={"logo"}
         className="flex md:hidden"
       />
-      <Box className="w-full bg-white md:h-16 md:w-1/4 md:flex md:items-center md:justify-center md:fixed md:z-50 y-0">
+      <Box className="w-full bg-white md:h-16 md:w-full md:flex md:items-center md:justify-center md:fixed md:z-50 y-0">
         <SearchAddress />
       </Box>
       <Box className="hidden md:flex-col md:gap-2 md:flex">Recommendations</Box>

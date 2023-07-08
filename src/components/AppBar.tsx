@@ -51,7 +51,7 @@ export default function AppBar() {
   }, [address, provider]);
 
   return (
-    <Box className="fixed bottom-0 z-50 flex justify-between md:w-[280px] md:gap-3 md:p-4 bg-white border md:static w-[100vw] max-h-16 md:max-h-screen md:min-h-screen border-t-gray-300 md:border-r-gray-300 md:flex-col">
+    <Box className="fixed bottom-0 z-50 flex justify-between md:w-[280px] md:gap-3 md:p-4 bg-white md:static w-[100vw] max-h-[72px] md:max-h-screen md:min-h-screen border-t-gray-300 md:border-r-gray-300 md:flex-col">
       <Box
         flexDirection={{ base: "row", md: "column" }}
         display={"flex"}
@@ -77,7 +77,7 @@ export default function AppBar() {
         )}
         {displayIcon === "none" && <Nav cta="Search" Icon={HiOutlineSearch} />}
       </Box>
-      <Box className="z-50 hidden top-4 right-4 md:right-auto md:left-auto md:top-auto md:bottom-8">
+      <Box className="z-50 hidden md:flex top-4 right-4 md:right-auto md:left-auto md:top-auto md:bottom-8">
         <Navbar />
       </Box>
     </Box>
