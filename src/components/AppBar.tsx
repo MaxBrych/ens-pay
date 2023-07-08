@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, useBreakpoint, useBreakpointValue } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { ConnectKit } from "./ConnectKit";
 import { ConnectKitButton } from "connectkit";
@@ -7,6 +7,16 @@ import Nav from "./ui/navigation/Nav";
 import Image from "next/image";
 import { useAccount, useEnsName, useEnsResolver } from "wagmi";
 import Navbar from "./NavBar";
+import {
+  HiOutlineDocumentText,
+  HiOutlineHome,
+  HiOutlineSearch,
+  HiOutlineUser,
+  HiOutlineUserCircle,
+  HiOutlineUserGroup,
+  HiOutlineViewList,
+} from "react-icons/hi";
+import Sidebar from "./Sidebar";
 
 const ethersDynamic: Promise<any> = import("ethers");
 
@@ -14,6 +24,13 @@ export default function AppBar() {
   const { address } = useAccount();
   const [provider, setProvider] = useState<any>(null);
   const [ensName, setENSName] = useState<string | null>(null);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
+  const displayIcon = useBreakpointValue({ base: "none", md: "flex" });
+
+  const SidebarVisibilityButton = sidebarVisible
+    ? HiOutlineViewList
+    : HiOutlineSearch;
 
   useEffect(() => {
     ethersDynamic.then((ethers) => {
@@ -38,12 +55,11 @@ export default function AppBar() {
   }, [address, provider]);
 
   return (
-    <Box className="fixed bottom-0 z-50 flex justify-between md:w-[280px] gap-3 p-4 bg-white border md:static w-[100vw] max-h-16 md:max-h-screen md:min-h-screen border-t-gray-300 md:border-r-gray-300 md:flex-col">
+    <Box className="fixed bottom-0 z-50 flex justify-between md:w-[280px] gap-3 md:p-4 bg-white border md:static w-[100vw] max-h-16 md:max-h-screen md:min-h-screen border-t-gray-300 md:border-r-gray-300 md:flex-col">
       <Box
-        flexDirection={"column"}
+        flexDirection={{ base: "row", md: "column" }}
         display={"flex"}
         gap={"2"}
-        className="fixed z-50"
       >
         <Image
           src={
@@ -54,15 +70,27 @@ export default function AppBar() {
           alt={"logo"}
           className="hidden md:flex"
         />
-        <Nav cta="Home" />
-        <Nav cta="Contacts" />
-        <Nav cta="Transactions" />
-        {ensName && <Nav cta="Profile" ensName={ensName} />}
-        <Nav cta="Settings" />
+        <Nav cta="Home" Icon={HiOutlineHome} />
+        <Nav cta="Contacts" Icon={HiOutlineUserGroup} />
+        <Nav cta="Transactions" Icon={HiOutlineDocumentText} />
+        {ensName && (
+          <Nav cta="Profile" ensName={ensName} Icon={HiOutlineUser} />
+        )}
+        {displayIcon === "flex" && (
+          <Nav cta="Settings" Icon={HiOutlineViewList} />
+        )}
+        {displayIcon === "none" && (
+          <Nav
+            cta="Search"
+            onClick={() => setSidebarVisible(!sidebarVisible)}
+            Icon={SidebarVisibilityButton}
+          />
+        )}
       </Box>
       <Box className="fixed z-50 top-4 right-4 md:right-auto md:left-auto md:top-auto md:bottom-8">
         <Navbar />
       </Box>
+      {sidebarVisible && displayIcon === "none" && <Sidebar />}
     </Box>
   );
 }

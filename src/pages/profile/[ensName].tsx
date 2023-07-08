@@ -26,8 +26,9 @@ import axios from "axios";
 import NavBarNew from "@/components/NavBarNew";
 import NFTList from "@/components/NFTList"; // adjust path to where your NFTList.tsx is located
 import AppBar from "@/components/AppBar";
-import Recommendation from "@/components/Recommendation";
+import Recommendation from "@/components/Sidebar";
 import { Avatar } from "connectkit";
+import Sidebar from "@/components/Sidebar";
 
 const manrope = Manrope({ subsets: ["latin"] });
 const ethersDynamic: Promise<any> = import("ethers");
@@ -227,7 +228,7 @@ const ProfilePage = () => {
         <NFTList ownerAddress={address} />
       </Box>
 
-      <Recommendation />
+      <Sidebar />
     </Container>
   );
 };

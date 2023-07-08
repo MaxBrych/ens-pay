@@ -1,6 +1,6 @@
 import React from "react";
 import AppBar from "@/components/AppBar";
-import Recommendation from "@/components/Recommendation";
+import Sidebar from "@/components/Sidebar";
 import { Box, Container } from "@chakra-ui/react";
 
 export default function Settings() {
@@ -13,7 +13,7 @@ export default function Settings() {
     >
       <AppBar />
       <Container width={"full"}>Feed</Container>
-      <Recommendation />
+      <Sidebar />
     </Container>
   );
 }

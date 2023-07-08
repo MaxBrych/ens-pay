@@ -1,5 +1,5 @@
 import AppBar from "@/components/AppBar";
-import Recommendation from "@/components/Recommendation";
+import Sidebar from "@/components/Sidebar";
 import UserTransactions from "@/components/sections/UserTransactions";
 import { Box, Container } from "@chakra-ui/react";
 import {
@@ -21,7 +21,7 @@ export default function Transactions() {
       <Container width={"full"}>
         <UserTransactions />
       </Container>
-      <Recommendation />
+      <Sidebar />
     </Container>
   );
 }

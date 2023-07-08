@@ -7,7 +7,7 @@ import { ConnectKitButton } from "connectkit";
 import { ConnectKit } from "@/components/ConnectKit";
 import NavBarNew from "@/components/NavBarNew";
 import AppBar from "@/components/AppBar";
-import Recommendation from "@/components/Recommendation";
+import Recommendation from "@/components/Sidebar";
 import Main from "@/components/Main";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,15 +18,15 @@ export default function Home() {
   const color = "gray.700";
 
   return (
-    <Container maxWidth={"5xl"}>
-      <Box
-        color={color}
-        className={`flex min-h-screen bg-white ${manrope.className}`}
-      >
-        <AppBar />
-        <Main />
-        <Recommendation />
-      </Box>
+    <Container
+      display={"flex"}
+      justifyContent={"space-between"}
+      maxWidth={"6xl"}
+      w={"full"}
+    >
+      <AppBar />
+      <Container width={"full"}>Feed</Container>
+      <Recommendation />
     </Container>
   );
 }
