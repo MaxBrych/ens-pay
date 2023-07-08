@@ -1,21 +1,19 @@
-import Image from "next/image";
-import { Inter, Manrope } from "next/font/google";
-import { Box, Container, useColorModeValue } from "@chakra-ui/react";
-import SearchAddress from "@/components/SearchAddress";
-import Navbar from "@/components/NavBar";
-import { ConnectKitButton } from "connectkit";
-import { ConnectKit } from "@/components/ConnectKit";
-import NavBarNew from "@/components/NavBarNew";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
+import { Container } from "@chakra-ui/react";
 import AppBar from "@/components/AppBar";
 import Sidebar from "@/components/Sidebar";
-import Main from "@/components/Main";
-
-const inter = Inter({ subsets: ["latin"] });
-const manrope = Manrope({ subsets: ["latin"] });
 
 export default function Home() {
-  const bg = "gray.50";
-  const color = "gray.700";
+  const router = useRouter();
+  const address = useAddress();
+
+  useEffect(() => {
+    if (address) {
+      router.push("/home");
+    }
+  }, [address]);
 
   return (
     <Container
@@ -27,7 +25,7 @@ export default function Home() {
     >
       <AppBar />
       <Container width={"full"} pt={"16"}>
-        Feed
+        <ConnectWallet />
       </Container>
       <Sidebar />
     </Container>

@@ -1,8 +1,17 @@
-// UserTransactions.tsx
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import { useContract, useContractRead } from "@thirdweb-dev/react";
-import { Image, Skeleton, Box, Text, VStack } from "@chakra-ui/react";
+import {
+  useContract,
+  useContractRead,
+  useAddress,
+  useWallet,
+} from "@thirdweb-dev/react";
+import { Box, Text, VStack, Icon } from "@chakra-ui/react";
+import {
+  HiOutlineArrowSmDown,
+  HiOutlineArrowSmUp,
+  HiOutlineSwitchHorizontal,
+} from "react-icons/hi";
 import axios from "axios";
 
 const CONTRACT_ADDRESS = "0x9c8b3ff4ec56363daED3caB2d449bdA279D14e37"; // Your contract address
@@ -10,19 +19,25 @@ const ENS_SUBGRAPH_URL =
   "https://api.thegraph.com/subgraphs/name/ensdomains/ens";
 const PLACEHOLDER_IMAGE =
   "https://cdn.discordapp.com/attachments/1070670506052821083/1116097197826658414/MaxCJack60_Front-facing_human_figure_styled_akin_to_a_Pokemon_p_9fe497d9-0642-49ce-829e-d00ad4a1876f.png"; // default avatar
+const DECIMALS = 6; // USDC has 6 decimals
 
 const UserTransactions = () => {
+  const wallet = useWallet();
+  const account = useAddress();
   const { contract } = useContract(CONTRACT_ADDRESS);
   const { data: transactions, isLoading: isLoadingTransactions } =
     useContractRead(contract, "getAllTransactions");
-
-  const DECIMALS = 6; // USDC has 6 decimals
 
   const [ensProvider, setEnsProvider] =
     useState<ethers.providers.Provider | null>(null);
   const [profiles, setProfiles] = useState<Record<string, any>>({}); // store fetched profile data
 
   useEffect(() => {
+    if (!wallet) {
+      console.log("No wallet available");
+      return;
+    }
+
     const initializeProvider = async () => {
       const ethersDynamic: any = await import("ethers");
       const provider = new ethersDynamic.providers.JsonRpcProvider(
@@ -32,7 +47,7 @@ const UserTransactions = () => {
     };
 
     initializeProvider();
-  }, []);
+  }, [wallet]);
 
   useEffect(() => {
     if (isLoadingTransactions || !ensProvider || !transactions) return;
@@ -49,30 +64,7 @@ const UserTransactions = () => {
         const ensName = await ensProvider.lookupAddress(address);
         if (!ensName) continue; // skip if no ENS name
 
-        // Fetch profile picture
-        const query = `
-        {
-          domains(where:{name:"${ensName}"}) {
-            id
-            name
-            resolver {
-              texts
-            }
-          }
-        }
-        `;
-        const response = await axios.post(ENS_SUBGRAPH_URL, { query });
-        const domains = response.data.data.domains;
-
-        if (domains.length > 0) {
-          const avatarRecord = domains[0].resolver.texts.find(
-            (text: any) => text.key === "avatar"
-          );
-          const avatar = avatarRecord ? avatarRecord.value : PLACEHOLDER_IMAGE;
-          profilesToUpdate[address] = { ensName, avatar };
-        } else {
-          profilesToUpdate[address] = { ensName, avatar: PLACEHOLDER_IMAGE };
-        }
+        profilesToUpdate[address] = { ensName };
       }
 
       setProfiles((prevProfiles) => ({ ...prevProfiles, ...profilesToUpdate }));
@@ -83,8 +75,23 @@ const UserTransactions = () => {
     <div>Loading transactions...</div>
   ) : (
     transactions.map((transaction: any, index: any) => {
+      const isSender = transaction.sender === account;
+      const isReceiver = transaction.receiver === account;
+
       const senderProfile = profiles[transaction.sender];
       const receiverProfile = profiles[transaction.receiver];
+
+      let IconComponent, color;
+      if (isSender && isReceiver) {
+        IconComponent = HiOutlineSwitchHorizontal;
+        color = "gray";
+      } else if (isSender) {
+        IconComponent = HiOutlineArrowSmUp;
+        color = "red";
+      } else if (isReceiver) {
+        IconComponent = HiOutlineArrowSmDown;
+        color = "green";
+      }
 
       return (
         <Box
@@ -96,32 +103,14 @@ const UserTransactions = () => {
           rounded="md"
         >
           <VStack align="start">
-            {senderProfile ? (
-              <>
-                <Text>Sender: {senderProfile.ensName}</Text>
-                <Image
-                  boxSize="50px"
-                  src={senderProfile.avatar}
-                  alt={senderProfile.ensName}
-                />
-              </>
-            ) : (
-              <Skeleton boxSize="50px" />
-            )}
-
-            {receiverProfile ? (
-              <>
-                <Text>Receiver: {receiverProfile.ensName}</Text>
-                <Image
-                  boxSize="50px"
-                  src={receiverProfile.avatar}
-                  alt={receiverProfile.ensName}
-                />
-              </>
-            ) : (
-              <Skeleton boxSize="50px" />
-            )}
-
+            <Text>
+              Sender:{" "}
+              {senderProfile ? senderProfile.ensName : transaction.sender}
+            </Text>
+            <Text>
+              Receiver:{" "}
+              {receiverProfile ? receiverProfile.ensName : transaction.receiver}
+            </Text>
             <Text>
               Amount: {ethers.utils.formatUnits(transaction.amount, DECIMALS)}
             </Text>
@@ -130,6 +119,7 @@ const UserTransactions = () => {
               Timestamp:{" "}
               {new Date(transaction.timestamp * 1000).toLocaleString()}
             </Text>
+            <Icon as={IconComponent} color={color} boxSize={6} />
           </VStack>
           <hr />
         </Box>
