@@ -28,6 +28,7 @@
     "content-hash": "^2.5.2",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
+    "@xmtp/xmtp-js": "^7.10.0",
     "ethers": "^5.7.2",
     "feather-icons-react": "^0.6.2",
     "framer-motion": "^10.12.16",

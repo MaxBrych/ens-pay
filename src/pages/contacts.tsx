@@ -2,6 +2,7 @@ import AppBar from "@/components/AppBar";
 import Sidebar from "@/components/Sidebar";
 import { Box, Container } from "@chakra-ui/react";
 import React from "react";
+import Home from "@/components/chat/Home";
 
 export default function Contacts() {
   return (
@@ -14,7 +15,7 @@ export default function Contacts() {
     >
       <AppBar />
       <Container width={"full"} pt={"16"}>
-        Feed
+        <Home />
       </Container>
       <Sidebar />
     </Container>
