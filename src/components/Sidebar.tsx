@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Sidebar() {
   return (
-    <Box className="fixed flex w-[100vw] h-16 top-0 z-40 items-center md:items-start justify-start md:w-[280px] gap-3 px-4 bg-white md:static md:h-full md:max-h-screen md:min-h-screen border-b-gray-300 md:border-l-gray-300 md:flex-col">
+    <Box className="fixed flex w-[100vw] h-16 top-0 z-40 items-center md:items-start justify-start md:w-[280px] gap-3 px-4 bg-white md:static md:h-full md:max-h-screen md:min-h-screen border border-b-gray-300 md:border-l-gray-300 md:flex-col">
       <Box className="flex md:hidden">
         <Navbar />
       </Box>

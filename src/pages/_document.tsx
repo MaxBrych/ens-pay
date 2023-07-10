@@ -1,4 +1,4 @@
-import AppBar from "@/components/AppBar";
+import AppBar from "@/components/ui/navigation/AppBar";
 import Navbar from "@/components/NavBar";
 import { ColorModeScript } from "@chakra-ui/react";
 import { Html, Head, Main, NextScript } from "next/document";

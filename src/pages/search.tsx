@@ -1,4 +1,4 @@
-import AppBar from "@/components/AppBar";
+import AppBar from "@/components/ui/navigation/AppBar";
 import SearchAddress from "@/components/SearchAddress";
 import Sidebar from "@/components/Sidebar";
 import { Container } from "@chakra-ui/react";

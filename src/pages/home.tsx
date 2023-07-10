@@ -1,4 +1,4 @@
-import AppBar from "@/components/AppBar";
+import AppBar from "@/components/ui/navigation/AppBar";
 import Sidebar from "@/components/Sidebar";
 import HomeFeed from "@/components/sections/HomeFeed";
 import { Container } from "@chakra-ui/react";

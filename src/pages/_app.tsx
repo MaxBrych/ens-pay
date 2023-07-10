@@ -3,9 +3,11 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import {
   ThirdwebProvider,
   coinbaseWallet,
+  localWallet,
   metamaskWallet,
+  smartWallet,
 } from "@thirdweb-dev/react";
-import { mode } from "@chakra-ui/theme-tools"; // <-- import the mode function
+import { API_KEY, SMART_WALLET } from "@/utils/addresses";
 import { WagmiConfig, createConfig } from "wagmi";
 import {
   ConnectKitProvider,
@@ -60,7 +62,18 @@ export default function App({ Component, pageProps }: AppProps) {
         <ConnectKitProvider>
           <ThirdwebProvider
             activeChain={activeChain}
-            supportedWallets={[coinbaseWallet(), metamaskWallet()]}
+            supportedWallets={[
+              smartWallet({
+                factoryAddress: SMART_WALLET,
+                thirdwebApiKey: API_KEY,
+                gasless: true,
+                personalWallets: [
+                  metamaskWallet(),
+                  coinbaseWallet(),
+                  localWallet(),
+                ],
+              }),
+            ]}
           >
             <ChakraProvider theme={theme}>
               <Component {...pageProps} />

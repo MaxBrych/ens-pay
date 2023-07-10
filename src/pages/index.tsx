@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import { Container } from "@chakra-ui/react";
-import AppBar from "@/components/AppBar";
+import AppBar from "@/components/ui/navigation/AppBar";
 import Sidebar from "@/components/Sidebar";
 
 export default function Home() {
@@ -25,7 +25,7 @@ export default function Home() {
     >
       <AppBar />
       <Container width={"full"} pt={"16"}>
-        <ConnectWallet />
+        Log In
       </Container>
       <Sidebar />
     </Container>

@@ -25,7 +25,7 @@ import AddressCopy from "@/components/AddressCopy";
 import axios from "axios";
 import NavBarNew from "@/components/NavBarNew";
 import NFTList from "@/components/NFTList"; // adjust path to where your NFTList.tsx is located
-import AppBar from "@/components/AppBar";
+import AppBar from "@/components/ui/navigation/AppBar";
 import Recommendation from "@/components/Sidebar";
 import { Avatar } from "connectkit";
 import Sidebar from "@/components/Sidebar";

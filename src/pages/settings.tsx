@@ -1,5 +1,5 @@
 import React from "react";
-import AppBar from "@/components/AppBar";
+import AppBar from "@/components/ui/navigation/AppBar";
 import Sidebar from "@/components/Sidebar";
 import { Box, Container } from "@chakra-ui/react";
 
