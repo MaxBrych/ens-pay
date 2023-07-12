@@ -79,6 +79,7 @@ export default function AppBar() {
       </Box>
       <Box className="z-50 hidden md:flex top-4 right-4 md:right-auto md:left-auto md:top-auto md:bottom-8">
         <Navbar />
+        <ConnectWallet />
       </Box>
     </Box>
   );

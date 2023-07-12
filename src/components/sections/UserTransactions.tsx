@@ -27,6 +27,7 @@ const UserTransactions = () => {
   const { contract } = useContract(CONTRACT_ADDRESS);
   const { data: transactions, isLoading: isLoadingTransactions } =
     useContractRead(contract, "getAllTransactions");
+  const [ensCache, setEnsCache] = useState<Record<string, any>>({}); // store fetched ENS names
 
   const [ensProvider, setEnsProvider] =
     useState<ethers.providers.Provider | null>(null);
@@ -55,21 +56,34 @@ const UserTransactions = () => {
     transactions.forEach(async (transaction: any) => {
       const { sender, receiver } = transaction;
       const profilesToUpdate: Record<string, any> = {};
+      const cacheToUpdate: Record<string, any> = {};
 
       for (const address of [sender, receiver]) {
         // Skip if already fetched
         if (profiles[address]) continue;
 
-        // Get ENS name
-        const ensName = await ensProvider.lookupAddress(address);
-        if (!ensName) continue; // skip if no ENS name
+        let ensName;
+
+        // Check if ENS name is in cache
+        if (ensCache[address]) {
+          ensName = ensCache[address];
+        } else {
+          // Fetch ENS name
+          ensName = await ensProvider.lookupAddress(address);
+          if (!ensName) continue; // skip if no ENS name
+          cacheToUpdate[address] = ensName;
+        }
 
         profilesToUpdate[address] = { ensName };
       }
 
+      // Update profiles
       setProfiles((prevProfiles) => ({ ...prevProfiles, ...profilesToUpdate }));
+
+      // Update ENS cache
+      setEnsCache((prevCache) => ({ ...prevCache, ...cacheToUpdate }));
     });
-  }, [isLoadingTransactions, ensProvider, transactions, profiles]);
+  }, [isLoadingTransactions, ensProvider, transactions, profiles, ensCache]);
 
   return isLoadingTransactions ? (
     <div>Loading transactions...</div>

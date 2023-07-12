@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.15",
+    "@bundlr-network/client": "^0.11.9",
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
@@ -21,6 +22,7 @@
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.4",
     "@web3-react/core": "^8.2.0",
+    "@xmtp/xmtp-js": "^7.10.0",
     "alchemy-sdk": "^2.9.1",
     "autoprefixer": "10.4.14",
     "connectkit": "^1.4.0",
@@ -28,7 +30,6 @@
     "content-hash": "^2.5.2",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
-    "@xmtp/xmtp-js": "^7.10.0",
     "ethers": "^5.7.2",
     "feather-icons-react": "^0.6.2",
     "framer-motion": "^10.12.16",

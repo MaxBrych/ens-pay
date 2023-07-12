@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import {
   Button,
   Flex,
@@ -14,6 +14,7 @@ import {
   VStack,
   Text,
   IconButton,
+  Input,
 } from "@chakra-ui/react";
 import { BiCoffeeTogo } from "react-icons/bi"; // for coffee icon
 import {
@@ -53,6 +54,37 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
   const [receiverEnsName, setReceiverEnsName] = useState<string | null>(null);
   const [ensProvider, setEnsProvider] =
     useState<ethers.providers.Provider | null>(null);
+
+  const [file, setFile] = useState<any>();
+  const [amount, setAmount] = useState(0);
+  const [message, setMessage] = useState("");
+
+  const uploadBoth = async () => {
+    if (!file || !message) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("message", message);
+    try {
+      const response = await fetch("/api/bundlr/uploadBoth", {
+        method: "POST",
+        body: formData,
+      });
+      const json = await response.json();
+      console.log("json:", json);
+      if (vote) {
+        await vote.propose(json.txId);
+        window.location.reload();
+      }
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    if (event.target.files) {
+      setFile(event.target.files[0]);
+    }
+  };
 
   useEffect(() => {
     const loadProviderAndSigner = async () => {
@@ -103,7 +135,8 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
   const { data: transactions, isLoading: isLoadingTransactions } =
     useContractRead(contract, "getAllTransactions");
 
-  async function handleDonate(amount: number, message: string) {
+  // Merged the uploadBoth() and handleDonate() functionalities
+  const handleDonate = async (amount: number, message: string) => {
     if (!wallet || !account) {
       return;
     }
@@ -142,20 +175,60 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
       return;
     }
 
-    const ethersDynamic: any = await import("ethers");
-    const value = ethersDynamic.utils.parseUnits(amount.toString(), DECIMALS);
+    // If no file is selected, we can't proceed
+    if (!file) {
+      toast({
+        title: "No file selected.",
+        description: "Please select a file before donating.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
 
-    // Record the transaction details in the contract and perform the transfer
-    const tx: any = await transferAndRecord({
-      args: [receiverAddress, value, message],
-    });
+    // If no message, we can't proceed
+    if (!message) {
+      toast({
+        title: "No message provided.",
+        description: "Please provide a message before donating.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
 
-    const provider = new ethersDynamic.providers.Web3Provider(window.ethereum);
-    await provider.waitForTransaction(tx.hash);
-  }
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("message", message);
+    try {
+      const response = await fetch("/api/bundlr/uploadBoth", {
+        method: "POST",
+        body: formData,
+      });
+      const json = await response.json();
+      console.log("json:", json);
 
-  const [amount, setAmount] = useState(0);
-  const [message, setMessage] = useState("");
+      // Here, we add the console log for the transaction URL
+      console.log("Arweave transaction URL:", json.txId);
+
+      const ethersDynamic: any = await import("ethers");
+      const value = ethersDynamic.utils.parseUnits(amount.toString(), DECIMALS);
+      // Record the transaction details in the contract and perform the transfer
+      const tx: any = await transferAndRecord({
+        args: [receiverAddress, value, json.txId],
+      });
+
+      const provider = new ethersDynamic.providers.Web3Provider(
+        window.ethereum
+      );
+      await provider.waitForTransaction(tx.hash);
+      window.location.reload();
+    } catch (err) {
+      console.log({ err });
+    }
+  };
 
   return (
     <>
@@ -191,6 +264,18 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
                 onChange={(e) => setAmount(parseFloat(e.target.value))}
                 placeholder="Amount (USDC)"
               />
+              <Flex direction="column" gap={4}>
+                <Input
+                  type="file"
+                  placeholder="Upload a file"
+                  onChange={handleFileChange}
+                  cursor="pointer"
+                  border="2px dashed"
+                  height={24}
+                  borderColor="gray.700"
+                  borderRadius="xl"
+                />
+              </Flex>
               <input
                 type="text"
                 value={message}

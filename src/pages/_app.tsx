@@ -62,18 +62,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <ConnectKitProvider>
           <ThirdwebProvider
             activeChain={activeChain}
-            supportedWallets={[
-              smartWallet({
-                factoryAddress: SMART_WALLET,
-                thirdwebApiKey: API_KEY,
-                gasless: true,
-                personalWallets: [
-                  metamaskWallet(),
-                  coinbaseWallet(),
-                  localWallet(),
-                ],
-              }),
-            ]}
+            supportedWallets={[coinbaseWallet(), metamaskWallet()]}
           >
             <ChakraProvider theme={theme}>
               <Component {...pageProps} />

@@ -3,6 +3,7 @@ import Sidebar from "@/components/Sidebar";
 import HomeFeed from "@/components/sections/HomeFeed";
 import { Container } from "@chakra-ui/react";
 import React from "react";
+import Articles from "@/components/sections/Articles";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
     >
       <AppBar />
       <Container width={"full"} pt={"16"}>
+        <Articles />
         <HomeFeed />
       </Container>
       <Sidebar />
