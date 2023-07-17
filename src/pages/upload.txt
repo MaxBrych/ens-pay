@@ -1,0 +1,111 @@
+import { ChangeEvent, useState, useContext, createContext } from "react";
+import BigNumber from "bignumber.js";
+
+import { ethers } from "ethers";
+import { WebBundlr } from "@bundlr-network/client";
+// This is how you define your context
+export const MainContext = createContext({
+  bundlrInstance: undefined,
+  initialiseBundlr: () => {},
+  balance: 0,
+  fetchBalance: () => {},
+});
+
+export default function Upload() {
+  const [message, setMessage] = useState("");
+  const [file, setFile] = useState<any>();
+  const [transaction, setTransaction] = useState("");
+
+  async function uploadBoth() {
+    if (!file || !message) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("message", message);
+
+    try {
+      const response = await fetch("/api/uploadBoth", {
+        method: "POST",
+        body: formData,
+      });
+      const json = await response.json();
+      console.log("json:", json);
+      setTransaction(json.txId);
+    } catch (err) {
+      console.log({ err });
+    }
+  }
+
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
+    if (event.target.files) {
+      setFile(event.target.files[0]);
+    }
+  }
+
+  const [bundlrInstance, setBundlrInstance] = useState(null);
+  const [balance, setBalance] = useState(0);
+  const [image, setImage] = useState();
+  const [URI, setURI] = useState();
+  const [amount, setAmount] = useState();
+
+  function onFileChange(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const image = URL.createObjectURL(file);
+      setImage(image);
+      let reader = new FileReader();
+      reader.onload = function () {
+        if (reader.result) {
+          setFile(Buffer.from(reader.result));
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  }
+
+  async function uploadFile() {
+    let tx = await bundlrInstance.uploader.upload(file, [
+      { name: "Content-Type", value: "image/png" },
+    ]);
+    console.log("tx: ", tx);
+    setURI(`http://arweave.net/${tx.data.id}`);
+  }
+
+  return (
+    <main className="flex flex-col items-center justify-between max-w-xl p-4">
+      <input
+        placeholder="Enter message"
+        onChange={(e) => setMessage(e.target.value)}
+        className="w-full h-12 max-w-full px-2 py-1 mt-6 mb-1 text-black bg-gray-700 rounded-xl"
+      />
+
+      <input
+        type="file"
+        placeholder="Upload a file"
+        onChange={handleFileChange}
+        className="flex flex-col items-center justify-center w-full h-40 max-w-full px-2 py-1 mt-6 mb-1 text-black text-white align-middle border-2 border-gray-700 border-dashed cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-white hover:file:bg-gray-800 rounded-xl"
+      />
+      <button
+        onClick={uploadBoth}
+        className="h-12 px-12 mt-2 font-semibold text-black bg-white rounded-full"
+      >
+        Upload All
+      </button>
+      {transaction && (
+        <a
+          target="_blank"
+          rel="no-opener"
+          href={transaction}
+          className="h-12 px-12 mt-2 font-semibold text-white bg-black border border-white rounded-full"
+        >
+          View Arweave Data
+        </a>
+      )}
+      <div>
+        <input type="file" onChange={onFileChange} />
+        <button onClick={uploadFile}>Upload File</button>
+        {image && <img src={image} style={{ width: "200px" }} />}
+        {URI && <a href={URI}>{URI}</a>}
+      </div>
+    </main>
+  );
+}

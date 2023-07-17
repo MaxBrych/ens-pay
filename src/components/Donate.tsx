@@ -59,27 +59,6 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
   const [amount, setAmount] = useState(0);
   const [message, setMessage] = useState("");
 
-  const uploadBoth = async () => {
-    if (!file || !message) return;
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("message", message);
-    try {
-      const response = await fetch("/api/bundlr/uploadBoth", {
-        method: "POST",
-        body: formData,
-      });
-      const json = await response.json();
-      console.log("json:", json);
-      if (vote) {
-        await vote.propose(json.txId);
-        window.location.reload();
-      }
-    } catch (err) {
-      console.log({ err });
-    }
-  };
-
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.files) {
       setFile(event.target.files[0]);
@@ -203,7 +182,7 @@ export default function DonateButton({ receiverAddress }: DonateButtonProps) {
     formData.append("file", file);
     formData.append("message", message);
     try {
-      const response = await fetch("/api/bundlr/uploadBoth", {
+      const response = await fetch("/api/uploadBoth", {
         method: "POST",
         body: formData,
       });
